@@ -91,7 +91,6 @@ class Graph {
         queue.add(start);
         while (!queue.isEmpty()) {
             temp = queue.peek();
-            //System.out.println(temp.positionX+temp.positionY);
             for (Node node : temp.getChilds()) {
                 queue.add(node);
             }
@@ -102,10 +101,13 @@ class Graph {
 
             while(!tempNode.getChilds().isEmpty()){
                 tempNode=tempNode.getChilds().removeFirst();
-                System.out.println(tempNode.positionX + " - " +tempNode.positionY);
                 if(tempNode!=null){
                     if(!path.contains(tempNode)){
                         path.add(tempNode);
+                        if(path.contains(goal)){
+                            queue.clear();
+                            break;
+                        }
                     }
                     
                 }
