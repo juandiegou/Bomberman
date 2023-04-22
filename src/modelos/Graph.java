@@ -14,13 +14,13 @@ class Graph {
         this.goal = goal;
     }
 
-    public Graph(HashMap<int[], Node> structure ) {
-        
+    public Graph(HashMap<int[], Node> structure) {
+
         this.structure = structure;
     }
-    
-    public Graph(){
-        
+
+    public Graph() {
+
     }
 
     public HashMap<int[], Node> strucutreGraph() {
@@ -60,26 +60,25 @@ class Graph {
      */
     public LinkedList<Node> profundidad(Node start, Node goal, LinkedList<Node> path) {
 
-        LinkedList <Node> templist = new LinkedList<Node>();
-            if (start.equals(goal)) {
-                path.add(start);
-                return path;
+        LinkedList<Node> templist = new LinkedList<Node>();
+        if (start.equals(goal)) {
+            path.add(start);
+            return path;
+        }
+
+        if (!path.contains(start)) {
+            path.add(start);
+            for (Node node : start.getChilds()) {
+
+                templist = profundidad(node, goal, path);
+                templist.forEach((nodes) -> {
+                    if (!path.contains(nodes)) {
+                        path.add(nodes);
+                    }
+                });
+
             }
-
-            if (!path.contains(start)) {
-                path.add(start);
-                for (Node node : start.getChilds()) {
-
-                    templist= profundidad(node, goal, path);
-                    templist.forEach((nodes)->{
-                        if(!path.contains(nodes)){
-                            path.add(nodes);
-                        }
-                    });
-
-                }
-            }
-        
+        }
 
         return path;
     }
@@ -105,70 +104,68 @@ class Graph {
 
             tempNode = temp;
 
-            while(!tempNode.getChilds().isEmpty()){
-                tempNode=tempNode.getChilds().removeFirst();
-                if(tempNode!=null){
-                    if(!path.contains(tempNode)){
+            while (!tempNode.getChilds().isEmpty()) {
+                tempNode = tempNode.getChilds().removeFirst();
+                if (tempNode != null) {
+                    if (!path.contains(tempNode)) {
                         path.add(tempNode);
-                        if(path.contains(goal)){
+                        if (path.contains(goal)) {
                             queue.clear();
                             break;
                         }
                     }
-                    
+
                 }
-                
+
             }
 
         }
         return path;
 
     }
-    
-    private void getChild(char[][] matriz){
-       
+
+    private void getChild(char[][] matriz) {
+
         Node temp;
-        
-        for(int x=0; x < matriz.length;x++){
-            for (int y=0; y< matriz[x].length; y++){
-                
-                if(y-1>0){
-                    temp = this.obtenerCoordenadas(x, y-1, this.structure);
+
+        for (int x = 0; x < matriz.length; x++) {
+            for (int y = 0; y < matriz[x].length; y++) {
+
+                if (y - 1 > 0) {
+                    temp = this.obtenerCoordenadas(x, y - 1, this.structure);
                 }
-                if(x+1<matriz[x].length && y-1>0){
-                    temp = this.obtenerCoordenadas(x+1, y-1, this.structure);
+                if (x + 1 < matriz[x].length && y - 1 > 0) {
+                    temp = this.obtenerCoordenadas(x + 1, y - 1, this.structure);
                 }
-                if(x+1<matriz[x].length){
-                    temp = this.obtenerCoordenadas(x+1, y, this.structure);
+                if (x + 1 < matriz[x].length) {
+                    temp = this.obtenerCoordenadas(x + 1, y, this.structure);
                 }
-                if(x+1<matriz[x].length && y+1<matriz.length){
-                    temp = this.obtenerCoordenadas(x+1, y+1, this.structure);
+                if (x + 1 < matriz[x].length && y + 1 < matriz.length) {
+                    temp = this.obtenerCoordenadas(x + 1, y + 1, this.structure);
                 }
-                if(y+1<matriz.length){
-                    temp = this.obtenerCoordenadas(x, y+1, this.structure);
+                if (y + 1 < matriz.length) {
+                    temp = this.obtenerCoordenadas(x, y + 1, this.structure);
                 }
-                if(x-1>0 && y+1<matriz.length){
-                    temp = this.obtenerCoordenadas(x-1, y+1, this.structure);
+                if (x - 1 > 0 && y + 1 < matriz.length) {
+                    temp = this.obtenerCoordenadas(x - 1, y + 1, this.structure);
                 }
-                if(x-1>0){
-                    temp = this.obtenerCoordenadas(x-1, y, this.structure);
+                if (x - 1 > 0) {
+                    temp = this.obtenerCoordenadas(x - 1, y, this.structure);
                 }
-                if(x-1>0 && y-1>0){
-                    temp = this.obtenerCoordenadas(x-1, y-1, this.structure);
+                if (x - 1 > 0 && y - 1 > 0) {
+                    temp = this.obtenerCoordenadas(x - 1, y - 1, this.structure);
                 }
             }
         }
-            
-         
-        }
-        
-    }
+
     
+
+    }
+
     private Node obtenerCoordenadas(int x, int y, HashMap<int[], Node> structure){
         
-        for (int[] key : structure.keySet()) {
-        
-        return
+        for (int[] key : structure.keySet()) {}
+        return null;
     }
 
 }
