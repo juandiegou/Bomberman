@@ -14,7 +14,7 @@ public class Reader {
         try {
             List<String> lines = Files.readAllLines(Paths.get(path));
             for (String line : lines) {
-                System.out.println(line);
+                data+=line;
             }
         } catch (Exception ex) {
             System.out.println("Error al leer el archivo: " + ex.getMessage());
