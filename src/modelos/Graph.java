@@ -6,7 +6,7 @@ class Graph {
 
     private Node start;
     private Node goal;
-    private HashMap<int[], Node> strucutre;
+    private HashMap<int[], Node> structure;
     private Queue<Node> queue;
 
     public Graph(Node start, Node goal) {
@@ -14,7 +14,13 @@ class Graph {
         this.goal = goal;
     }
 
-    public Graph() {
+    public Graph(HashMap<int[], Node> structure ) {
+        
+        this.structure = structure;
+    }
+    
+    public Graph(){
+        
     }
 
     public HashMap<int[], Node> strucutreGraph() {
@@ -117,6 +123,52 @@ class Graph {
         }
         return path;
 
+    }
+    
+    private void getChild(char[][] matriz){
+       
+        Node temp;
+        
+        for(int x=0; x < matriz.length;x++){
+            for (int y=0; y< matriz[x].length; y++){
+                
+                if(y-1>0){
+                    temp = this.obtenerCoordenadas(x, y-1, this.structure);
+                }
+                if(x+1<matriz[x].length && y-1>0){
+                    temp = this.obtenerCoordenadas(x+1, y-1, this.structure);
+                }
+                if(x+1<matriz[x].length){
+                    temp = this.obtenerCoordenadas(x+1, y, this.structure);
+                }
+                if(x+1<matriz[x].length && y+1<matriz.length){
+                    temp = this.obtenerCoordenadas(x+1, y+1, this.structure);
+                }
+                if(y+1<matriz.length){
+                    temp = this.obtenerCoordenadas(x, y+1, this.structure);
+                }
+                if(x-1>0 && y+1<matriz.length){
+                    temp = this.obtenerCoordenadas(x-1, y+1, this.structure);
+                }
+                if(x-1>0){
+                    temp = this.obtenerCoordenadas(x-1, y, this.structure);
+                }
+                if(x-1>0 && y-1>0){
+                    temp = this.obtenerCoordenadas(x-1, y-1, this.structure);
+                }
+            }
+        }
+            
+         
+        }
+        
+    }
+    
+    private Node obtenerCoordenadas(int x, int y, HashMap<int[], Node> structure){
+        
+        for (int[] key : structure.keySet()) {
+        
+        return
     }
 
 }
