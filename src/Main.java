@@ -1,6 +1,7 @@
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedList;
 import tools.Conversor;
 import tools.Reader;
 
@@ -20,8 +21,8 @@ public class Main {
 
         //Espacios para probar si recibe, el archivo .txt y mapea.
         
-        String path = "C:\\archivoProyecto\\path.txt";
-        char[][] matrix;
+        String path = "C:\\Users\\JUANDIEGO\\Desktop\\path.txt";
+        char[][] matrix; 
 
         Conversor convertidor = new Conversor();
         Reader lector = new Reader();
@@ -44,17 +45,18 @@ public class Main {
             System.out.println("");
         }
         
-        
+        Graph graph = new Graph(structure, matrix);
+        Node start = graph.nodeFromCoords(0, 1, structure);
+        Node goal = graph.nodeFromCoords(2,4, structure);
+        //LinkedList<Node> nodePath = graph.beamsearch(start, goal, true);
+        //LinkedList<Node> nodePath = graph.profundidad(start, goal, new LinkedList<Node>());
+        //LinkedList<Node> nodePath = graph.anchura(start, goal);
+        LinkedList<Node> nodePath = graph.ufc(start, goal,new LinkedList<Node>());
+        System.out.println(nodePath.size());
+        nodePath.forEach((Node node)->{
+            System.out.println(node.positionX+" "+node.positionY+" :"+node.data);
+        });
         
     }
     
-    // H: HashMap 
-    // M: Matriz
-    
-    public void verificarPosicion(int xH, int yH, int xM,int yM){
-        
-        if(xH == xM && yH == yM){
-            
-        }
-    }
 }
