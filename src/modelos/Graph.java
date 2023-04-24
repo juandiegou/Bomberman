@@ -1,3 +1,4 @@
+
 import java.util.Queue;
 import java.util.Map.Entry;
 import java.util.Comparator;
@@ -383,5 +384,30 @@ class Graph {
         for(Node temp : this.structure.values()){
             temp.setPrioity(Double.POSITIVE_INFINITY);
         }
+    }
+
+    public LinkedList<Node> hillClimbing(Node start, Node goal) {
+        LinkedList<Node> path = new LinkedList<Node>();
+        Node current = start;
+        double currentCost = manhattan(current, goal);
+        path.add(current);
+        while (current != goal) {
+            double lowestCost = Double.POSITIVE_INFINITY;
+            Node lowestNode = null;
+            for (Node neighbor : current.getChilds()) {
+                double neighborCost = manhattan(neighbor, goal);
+                if (neighborCost < lowestCost) {
+                    lowestCost = neighborCost;
+                    lowestNode = neighbor;
+                }
+            }
+            if (lowestCost >= currentCost) {
+                return path;
+            }
+            current = lowestNode;
+            currentCost = lowestCost;
+            path.add(current);
+        }
+        return path;
     }
 }
