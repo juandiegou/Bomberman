@@ -3,6 +3,7 @@ import java.util.Queue;
 import java.util.Map.Entry;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
@@ -140,65 +141,69 @@ class Graph {
         Node aux; 
         Node temp;
 
-        for (int x = 0; x < matrix.length; x++) {
-            for (int y = 0; y < matrix[x].length; y++) {
-                aux= this.nodeFromCoords(x, y, structure);
-                if (x + 1 < matrix[x].length && y - 1 > 0) {
-                    temp = this.nodeFromCoords(x + 1, y - 1, this.structure);
-                    if(temp!=null){
-                        aux.childs.add(temp);
-                    }
-                }
-                if (x + 1 < matrix[x].length) {
-                    temp = this.nodeFromCoords(x + 1, y, this.structure);
-                    if(temp!=null){
-                        aux.childs.add(temp);
-                    }
-                }
-                if (x + 1 < matrix[x].length && y + 1 < matrix.length) {
-                    temp = this.nodeFromCoords(x + 1, y + 1, this.structure);
-                    if(temp!=null){
-                        aux.childs.add(temp);
-                    }
-                }
-                if (y + 1 < matrix.length) {
-                    temp = this.nodeFromCoords(x, y + 1, this.structure);
-                    if(temp!=null){
-                        aux.childs.add(temp);
-                    }
-                }
-                if (x - 1 > 0 && y + 1 < matrix.length) {
-                    temp = this.nodeFromCoords(x - 1, y + 1, this.structure);
-                    if(temp!=null){
-                        aux.childs.add(temp);
-                    }
-                }
-                if (x - 1 > 0 && y - 1 > 0) {
-                    temp = this.nodeFromCoords(x - 1, y - 1, this.structure);
-                    if(temp!=null){
-                        aux.childs.add(temp);
-                    }
-                }
-                if (y - 1 > 0) {
-                    temp = this.nodeFromCoords(x, y - 1, this.structure);
-                    if(temp!=null){
-                        aux.childs.add(temp);
-                    }
-                   
-                    
-                }
+        for (int filas = 0; filas < matrix.length; filas++) {
+            for (int columnas = 0; columnas < matrix[filas].length; columnas++) {
+                aux= this.nodeFromCoords(filas, columnas, structure);
 
-
-
-
-
-                if (x - 1 > 0) {
-                    temp = this.nodeFromCoords(x - 1, y, this.structure);
+                //x-1 y-1
+                if(filas-1>0 && columnas-1>0){
+                    temp = this.nodeFromCoords(filas + 1, columnas - 1, this.structure);
+                    if(temp!=null){
+                        aux.childs.add(temp);
+                    }
+                }
+                //x y-1
+                if(columnas-1>0){
+                    temp = this.nodeFromCoords(filas, columnas - 1, this.structure);
+                    if(temp!=null){
+                        aux.childs.add(temp);
+                    }
+                }
+                //x+1 y-1
+                if(filas+1<matrix.length && columnas-1>0){
+                    temp = this.nodeFromCoords(filas+1, columnas - 1, this.structure);
+                    if(temp!=null){
+                        aux.childs.add(temp);
+                    }                    
+                }
+                //x+1 y
+                if(filas+1<matrix.length ){
+                    temp = this.nodeFromCoords(filas+1, columnas, this.structure);
                     if(temp!=null){
                         aux.childs.add(temp);
                     }
                 }
 
+                //x+1 y+1
+                if(filas+1<matrix.length && columnas+1<matrix[filas].length){
+                    temp = this.nodeFromCoords(filas+1, columnas + 1, this.structure);
+                    if(temp!=null){
+                        aux.childs.add(temp);
+                    }
+                }
+                //x y+1
+                if(columnas+1<matrix[filas].length){
+                    temp = this.nodeFromCoords(filas, columnas + 1, this.structure);
+                    if(temp!=null){
+                        aux.childs.add(temp);
+                    }
+                }
+
+                //x-1 y+1
+                if(filas-1>0 && columnas+1<matrix[filas].length){
+                    temp = this.nodeFromCoords(filas-1, columnas+1, this.structure);
+                    if(temp!=null){
+                        aux.childs.add(temp);
+                    }
+                }
+
+                //x-1 y 
+                if(filas-1>0 ){
+                    temp = this.nodeFromCoords(filas-1, columnas, this.structure);
+                    if(temp!=null){
+                        aux.childs.add(temp);
+                    }
+                }
             }
         }
 
@@ -211,32 +216,40 @@ class Graph {
         Node aux; 
         Node temp;
 
-        for (int x = 0; x < matrix.length; x++) {
-            for (int y = 0; y < matrix[x].length; y++) {
-                aux= this.nodeFromCoords(x, y, structure);
-                if (x + 1 < matrix[x].length) {
-                    temp = this.nodeFromCoords(x + 1, y, this.structure);
+
+        for (int filas = 0; filas < matrix.length; filas++) {
+            for (int columnas = 0; columnas < matrix[filas].length; columnas++) {
+                aux= this.nodeFromCoords(filas, columnas, structure);
+
+
+                //x y-1
+                if(columnas-1>0){
+                    temp = this.nodeFromCoords(filas, columnas - 1, this.structure);
                     if(temp!=null){
                         aux.childs.add(temp);
                     }
-                }
-                if (y + 1 < matrix.length) {
-                    temp = this.nodeFromCoords(x, y + 1, this.structure);
-                    if(temp!=null){
-                        aux.childs.add(temp);
-                    }
-                }
-                if (y - 1 > 0) {
-                    temp = this.nodeFromCoords(x, y - 1, this.structure);
-                    if(temp!=null){
-                        aux.childs.add(temp);
-                    }
-                   
-                    
                 }
 
-                if (x - 1 > 0) {
-                    temp = this.nodeFromCoords(x - 1, y, this.structure);
+                //x+1 y
+                if(filas+1<matrix.length ){
+                    temp = this.nodeFromCoords(filas+1, columnas, this.structure);
+                    if(temp!=null){
+                        aux.childs.add(temp);
+                    }
+                }
+
+
+                //x y+1
+                if(columnas+1<matrix[filas].length){
+                    temp = this.nodeFromCoords(filas, columnas + 1, this.structure);
+                    if(temp!=null){
+                        aux.childs.add(temp);
+                    }
+                }
+
+                //x-1 y 
+                if(filas-1>0 ){
+                    temp = this.nodeFromCoords(filas-1, columnas, this.structure);
                     if(temp!=null){
                         aux.childs.add(temp);
                     }
@@ -410,4 +423,97 @@ class Graph {
         }
         return path;
     }
+
+    /**
+     * Find shortest path between two nodes using A* algorithm
+     * @param origin starting node
+     * @param target end node
+     * @return LinkedList of nodes representing the shortest path
+     */
+    public LinkedList<Node> AStar(Node origin, Node target,  boolean type){
+
+        HashMap<Node, Double> heuristic;
+        if(type){
+            heuristic=this.euclidian(target);
+        }else{
+            heuristic = this.manhattan(target);
+        }
+        initializtion();
+        // initialize priority queue to store nodes to visit
+        LinkedList<Node> path = new LinkedList<Node>();
+        PriorityQueue<Node> openList = new PriorityQueue<Node>(new Comparator<Node>() {
+            @Override
+            public int compare(Node node1, Node node2) {
+                return Double.compare(node1.getPriority(), node2.getPriority());
+            }
+        });
+
+        // initialize set to mark nodes already visited
+        HashSet<Node> closedList = new HashSet<Node>();
+
+        // set priority of origin node to 0 and add to queue
+        //origin.setPriority(0);
+        openList.add(origin);
+
+        while(!openList.isEmpty()){
+
+            // get node with lowest priority value
+            Node current = openList.poll();
+
+            // check if we've reached the target node
+            if(current == target){
+                // backtrack to create path from origin to target and return it
+                System.out.println("encontrado!!!");
+                return reconstructPath(origin, target);
+            }
+
+            // add current node to the closed list
+            closedList.add(current);
+
+            // look at all neighbors of current node
+            for(Node neighbor : current.getChilds()){
+
+                // if neighbor node has already been visited, skip it
+                if(closedList.contains(neighbor)){
+                    continue;
+                }
+
+                // calculate the distance from the origin node to the neighbor node
+                //double tentativeDist = current.getPriority() + neighbor.getPriority();
+                double tentativeDist =heuristic.get(current)+ heuristic.get(neighbor);
+                if(tentativeDist < neighbor.getPriority()){
+
+                    // this path to neighbor node is better than any previous one, so update it
+                    neighbor.setPrevious(current);
+                    neighbor.setPriority(tentativeDist);
+
+                    if(!openList.contains(neighbor)){
+                        openList.add(neighbor);
+                    }
+                }
+            }
+            path.add( current);
+        }
+
+        // we've search through the entire graph and haven't found a path to the target node
+        return path;
+    }
+
+    /**
+     * Reconstruct path from origin to target node by backtracking through previous nodes
+     * @param origin starting node
+     * @param target end node
+     * @return LinkedList of nodes representing the path
+     */
+    private LinkedList<Node> reconstructPath(Node origin, Node target){
+        LinkedList<Node> path = new LinkedList<Node>();
+        Node current = target;
+        while(current != origin){
+            path.addFirst(current);
+            current = current.getPrevious();
+        }
+        path.addFirst(origin);
+        return path;
+    }
+    
 }
