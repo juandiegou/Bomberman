@@ -45,13 +45,16 @@ public class Main {
         }
         
         Graph graph = new Graph(structure, matrix);
-        Node start = graph.nodeFromCoords(0, 1, structure);
-        Node goal = graph.nodeFromCoords(2,3, structure);
+        Node start = graph.nodeFromCoords(0, 0, structure);
+        Node goal = graph.nodeFromCoords(3,6, structure);
         //LinkedList<Node> nodePath = graph.beamsearch(start, goal, true);
         //LinkedList<Node> nodePath = graph.profundidad(start, goal, new LinkedList<Node>());
         //LinkedList<Node> nodePath = graph.anchura(start, goal);
         //LinkedList<Node> nodePath = graph.ufc(start, goal,new LinkedList<Node>());
-        LinkedList<Node> nodePath = graph.hillClimbing(start, goal);
+        //LinkedList<Node> nodePath = graph.hillClimbing(start, goal);
+        System.out.println(start);
+        System.out.println(goal);
+        LinkedList<Node> nodePath = graph.AStar(start, goal,false);
         System.out.println(nodePath.size());
         nodePath.forEach((Node node)->{
             System.out.println(node.positionX+" "+node.positionY+" :"+node.data);
