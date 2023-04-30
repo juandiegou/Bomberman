@@ -1,11 +1,12 @@
+package modelos;
 import java.util.*;
 
 public class Node{
 
-    String data;
+    public String data;
     private int [] position;
-    int positionX;
-    int positionY;
+    public int positionX;
+    public int positionY;
     private double priority;
     LinkedList<Node> childs;
     Node previous;

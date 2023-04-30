@@ -1,4 +1,4 @@
-
+package modelos;
 import java.util.Queue;
 import java.util.Map.Entry;
 import java.util.Comparator;
@@ -7,21 +7,13 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
-class Graph {
-
-    private Node start;
-    private Node goal;
+public class Graph {
     private HashMap<int[], Node> structure;
     private Queue<Node> queue;
-    private int nivel;
-    public Graph(Node start, Node goal) {
-        this.start = start;
-        this.goal = goal;
-    }
-
+    private int level;
     public Graph(HashMap<int[], Node> structure, String[][] matrix) {
 
-        this.nivel=0;
+        this.level=0;
         this.structure = structure;
         this.getChild(matrix);
         // this.getFullChild(matrix);
@@ -236,7 +228,7 @@ class Graph {
                     temp = this.nodeFromCoords(filas, columnas + 1, this.structure);
                     if (temp != null) {
                         aux.childs.add(temp);
-                        this.nivel++;
+                        this.level++;
                     }
                 }
 
@@ -494,15 +486,10 @@ class Graph {
             path.add(current);
         }
 
-        // we've search through the entire graph and haven't found a path to the target
-        // node
         return path;
     }
 
     /**
-     * Reconstruct path from origin to target node by backtracking through previous
-     * nodes
-     * 
      * @param origin starting node
      * @param target end node
      * @return LinkedList of nodes representing the path
@@ -518,7 +505,7 @@ class Graph {
         return path;
     }
 
-    public int getNivel(){
-        return this.nivel;
+    public int getlevel(){
+        return this.level;
     }
 }
