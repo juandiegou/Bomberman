@@ -17,6 +17,6 @@ public interface Images
     public static final ImageIcon imagenPiso=new ImageIcon("src/imagenes/bomberman_camino.png");
     public static final ImageIcon imagenPared=new ImageIcon("src/imagenes/bomberman_pared2.png");
     public static final ImageIcon imagenEsmeralda=new ImageIcon("src/imagenes/Esmeralda.jpg");
-    public static final ImageIcon imagenPiedraRubi=new ImageIcon("src/imagenes/bomberman.png");
+    public static final ImageIcon imagenPiedraRubi=new ImageIcon("src/imagenes/bomberman_con_fondo.png");
     public static final ImageIcon imagenDiamante=new ImageIcon("src/imagenes/Diamante.jpg");
 }
