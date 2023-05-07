@@ -1,13 +1,14 @@
-package vistas;
+package views;
 import java.awt.Color;
 import java.util.LinkedList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import modelos.*;
+import models.*;
 
 
 public class VentanaJuego extends JFrame
@@ -17,12 +18,13 @@ public class VentanaJuego extends JFrame
     
 
     
-    public JButton guardarPartida;
-    public JButton cargarPartida;
-    public JButton reiniciarPartida;
-    public JButton borrarPartida;
-    public JButton creditos;
-    public JButton salirJuego;
+    public JButton profundidad;
+    public JButton anchura;
+    public JButton UFC;
+    public JButton hillClimbing;
+    public JButton beamSearch;
+    public JButton aStar;
+    public JButton reset;
     
 
     
@@ -33,7 +35,6 @@ public class VentanaJuego extends JFrame
       */
     
     public VentanaJuego(String [][] matrix){
-          
         inicializarPanelJuego();        
         inicializarBotones();
         inicializarTableroJuego(matrix);  
@@ -56,37 +57,46 @@ public class VentanaJuego extends JFrame
       */
     
     public void inicializarBotones(){
+
+        JLabel label = new JLabel("Recorridos");
+        label.setBounds(994, 70, 190, 30);
+        label.setForeground(Color.white);
+        panelJuego.add(label);
+        
+        profundidad=new JButton("Recorrido en Profundidad");
+        profundidad.setBounds(994, 112, 190, 30);
+        profundidad.setFocusable(false);
+        panelJuego.add(profundidad);
+        
+        anchura=new JButton("Recorrido en Anchura");
+        anchura.setBounds(994, 168, 190, 30);
+        anchura.setFocusable(false);
+        panelJuego.add(anchura);
+        
+        UFC=new JButton("Recorrido Costo Uniforme");
+        UFC.setBounds(994, 224, 190, 30);
+        UFC.setFocusable(false);
+        panelJuego.add(UFC);
+
+        hillClimbing=new JButton("Recorrido Hill Climbing");
+        hillClimbing.setBounds(994, 280, 190, 30);
+        hillClimbing.setFocusable(false);
+        panelJuego.add(hillClimbing);
+        
+        beamSearch=new JButton("Recorrido de Beam Search");
+        beamSearch.setBounds(994, 336, 190, 30);
+        beamSearch.setFocusable(false);
+        panelJuego.add(beamSearch);
+        
+        aStar=new JButton("Recorrido A *");
+        aStar.setBounds(994, 392, 190, 30);
+        aStar.setFocusable(false);
+        panelJuego.add(aStar);
     
-        guardarPartida=new JButton("Guardar Partida");
-        guardarPartida.setBounds(864, 112, 150, 30);
-        guardarPartida.setFocusable(false);
-        panelJuego.add(guardarPartida);
-        
-        cargarPartida=new JButton("Cargar Partida");
-        cargarPartida.setBounds(864, 168, 150, 30);
-        cargarPartida.setFocusable(false);
-        panelJuego.add(cargarPartida);
-        
-        reiniciarPartida=new JButton("Reiniciar Partida");
-        reiniciarPartida.setBounds(864, 224, 150, 30);
-        reiniciarPartida.setFocusable(false);
-        panelJuego.add(reiniciarPartida);
-        
-        borrarPartida=new JButton("Borrar Partida");
-        borrarPartida.setBounds(864, 280, 150, 30);
-        borrarPartida.setFocusable(false);
-        panelJuego.add(borrarPartida);
-        
-        creditos=new JButton("Créditos");
-        creditos.setBounds(864, 336, 150, 30);
-        creditos.setFocusable(false);
-        panelJuego.add(creditos);
-        
-        salirJuego=new JButton("Salir");
-        salirJuego.setBounds(864, 392, 150, 30);
-        salirJuego.setFocusable(false);
-        panelJuego.add(salirJuego);
-    
+        reset=new JButton("Restablecer");
+        reset.setBounds(994, 444, 190, 30);
+        reset.setFocusable(false);
+        panelJuego.add(reset);
     }
     
     /** Inicializa el tablero asociandolo a PanelJuego
@@ -112,7 +122,7 @@ public class VentanaJuego extends JFrame
         setVisible(true);
         setLayout(null);
         setResizable(false);
-        setIconImage(new ImageIcon(getClass().getResource("/imagenes/Icono.jpg")).getImage());
+        setIconImage(new ImageIcon(getClass().getResource("/images/Icono.jpg")).getImage());
         setLocationRelativeTo(null);
          
     }
@@ -123,5 +133,9 @@ public class VentanaJuego extends JFrame
      */
     public void paintPath(LinkedList<Node> path){
         this.tablero.actualizarTablero(panelJuego, path);
+    }
+
+    public void reset(){
+        this.tablero.resetBoard(); 
     }
 }

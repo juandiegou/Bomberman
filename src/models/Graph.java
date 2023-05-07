@@ -1,4 +1,4 @@
-package modelos;
+package models;
 import java.util.Queue;
 import java.util.Map.Entry;
 import java.util.Comparator;

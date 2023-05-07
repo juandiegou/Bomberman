@@ -1,4 +1,4 @@
-package modelos;
+package models;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -23,7 +23,7 @@ public class Square extends Component
     public Square(int tamañoEnX, int tamañoEnY, ImageIcon imagenCelda, JPanel panelJuego){
     
         etiquetaCelda=new JLabel();
-        etiquetaCelda.setBounds(tamañoEnX*32, tamañoEnY*32, 31, 31);
+        etiquetaCelda.setBounds(tamañoEnX*64, tamañoEnY*64, 60, 60);
         etiquetaCelda.setIcon(imagenCelda);
         panelJuego.add(etiquetaCelda);
     
@@ -41,7 +41,7 @@ public class Square extends Component
     public Square(int tamañoEnX, int tamañoEnY, Font fuenteTexto, String texto, Color colorTexto, JPanel panelJuego){
     
         etiquetaCelda=new JLabel();
-        etiquetaCelda.setBounds(tamañoEnX*32, tamañoEnY*32, 31, 31);        
+        etiquetaCelda.setBounds(tamañoEnX*64, tamañoEnY*64, 64, 64);        
         etiquetaCelda.setFont(fuenteTexto);
         etiquetaCelda.setText(texto);
         etiquetaCelda.setForeground(colorTexto);

@@ -1,4 +1,4 @@
-package modelos;
+package models;
 import java.util.*;
 
 public class Node{

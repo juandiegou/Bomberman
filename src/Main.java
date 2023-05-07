@@ -3,10 +3,11 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.concurrent.TimeUnit;
 
+import controllers.EventController;
+import models.*;
 import tools.Conversor;
 import tools.Reader;
-import modelos.*;
-import vistas.VentanaJuego;
+import views.VentanaJuego;
 
 
 /**
@@ -30,7 +31,7 @@ public class Main {
         Reader lector = new Reader();
 
         //Impresion del text leido
-        System.out.println(lector.readFile(path));
+        //System.out.println(lector.readFile(path));
         
         
         //Matrix lista para trabajarle.
@@ -40,17 +41,14 @@ public class Main {
         for (int x = 0; x < matrix.length; x++) {
             
             for (int y = 0; y < matrix[x].length; y++) {
-                //System.out.print(matrix[x][y] + " ");
-                structure.put(new int[] {x, y}, new Node(new int[] {x, y}, matrix[x][y]));
-                
+                structure.put(new int[] {x, y}, new Node(new int[] {x, y}, matrix[x][y]));   
             }
-            System.out.println("");
         }
         
         Graph graph = new Graph(structure, matrix);
         Node start = graph.nodeFromCoords(0, 0, structure);
         Node goal = graph.nodeFromCoords(6,2, structure);
-        LinkedList<Node> nodePath = graph.beamsearch(start, goal, true);
+        //LinkedList<Node> nodePath = graph.beamsearch(start, goal, true);
         //LinkedList<Node> nodePath = graph.profundidad(start, goal, new LinkedList<Node>());
         //LinkedList<Node> nodePath = graph.anchura(start, goal);
         //LinkedList<Node> nodePath = graph.ufc(start, goal,new LinkedList<Node>());
@@ -67,21 +65,9 @@ public class Main {
 
         //System.out.println("\nAltura del arbol:"+ graph.getNivel());
         VentanaJuego bomberman=new VentanaJuego(matrix);
-        try {
-            TimeUnit.SECONDS.sleep(3);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }finally{
-            nodePath.forEach((Node node)->{
-                //System.out.printf(node.data+",");
-                System.out.println(node.positionX+"  "+node.positionY+ " : "+node.data);
-                node.data= "P";
-            });
-            bomberman.paintPath(nodePath);
-        
-        }
-
+        EventController controller=new EventController(bomberman,graph);
+        controller.setGoal(goal);
+        controller.setStart(start);
         
     }
 
