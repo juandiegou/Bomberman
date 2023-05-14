@@ -8,13 +8,15 @@ import java.util.LinkedList;
 import java.util.PriorityQueue;
 
 public class Graph {
-    private HashMap<int[], Node> structure;
+    public HashMap<int[], Node> structure;
     private Queue<Node> queue;
     private int level;
+    public String [][] matrix;
     public Graph(HashMap<int[], Node> structure, String[][] matrix) {
 
         this.level=0;
         this.structure = structure;
+        this.matrix = matrix;
         this.getChild(matrix);
         // this.getFullChild(matrix);
     }
@@ -263,7 +265,6 @@ public class Graph {
      * @return
      */
     public Node nodeFromCoords(int x, int y, HashMap<int[], Node> structure) {
-
         for (Entry<int[], Node> data : structure.entrySet()) {
             if (data.getKey()[0] == x && data.getKey()[1] == y) {
                 return data.getValue();

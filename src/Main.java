@@ -4,11 +4,16 @@ import java.util.LinkedList;
 import java.util.concurrent.TimeUnit;
 
 import controllers.EventController;
+import jade.core.Runtime;
+import jade.core.Profile;
+import jade.core.ProfileImpl;
+import jade.wrapper.AgentContainer;
+import jade.wrapper.AgentController;
 import models.*;
 import tools.Conversor;
 import tools.Reader;
 import views.VentanaJuego;
-
+import views.*;
 
 /**
  *
@@ -18,6 +23,7 @@ public class Main {
 
     /**
      * @param args
+     * @param graph2 TODO
      */
     @SuppressWarnings("empty-statement")
     public static void main(String[] args) {
@@ -64,11 +70,36 @@ public class Main {
 
 
         //System.out.println("\nAltura del arbol:"+ graph.getNivel());
+        /**
         VentanaJuego bomberman=new VentanaJuego(matrix);
         EventController controller=new EventController(bomberman,graph);
         controller.setGoal(goal);
         controller.setStart(start);
+        */
+
+        Runtime runtime = Runtime.instance();
+        Profile profile = new ProfileImpl();
+        //profile profile = new ProfileImpl("localhost", 3333,"MainPlataform",true);
+        profile.setParameter(Profile.MAIN_HOST, "localhost");
+        profile.setParameter(Profile.MAIN_PORT, "1099");
+        profile.setParameter(Profile.PLATFORM_ID, "MAIN");
+        //profile.setParameter(Profile.LOCAL_PORT, 2000);
+
+       
         
+        try {
+            // Crear el agente de GUI
+            Object[] arg = new Object[]{graph};
+            AgentContainer container = runtime.createMainContainer(profile);
+            System.out.println(container);
+            AgentController agentController = container.createNewAgent("vista", "views.AGUI",arg );
+            agentController.start();
+            
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
     }
 
     

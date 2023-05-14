@@ -1,20 +1,26 @@
 package controllers;
 
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import java.util.LinkedList;
 import models.*;
+import views.InputField;
 import views.VentanaJuego;
 
 public class EventController implements ActionListener, KeyListener {
     private VentanaJuego ventana;
+    public JFrame frame;
     private Graph graph;
-    private Node start;
-    private Node goal;
+    public Node start;
+    public Node goal;
     private LinkedList<Node> path;
     private Thread drawer;
     private GestorPartidas gestorPartidas;
@@ -43,6 +49,7 @@ public class EventController implements ActionListener, KeyListener {
 
     private void escucharAcciones(ActionListener listener) {
 
+        ventana.define.addActionListener(listener);
         ventana.anchura.addActionListener(listener);
         ventana.profundidad.addActionListener(listener);
         ventana.UFC.addActionListener(listener);
@@ -101,38 +108,52 @@ public class EventController implements ActionListener, KeyListener {
                 path = graph.AStar(start, goal, true);
             }
 
-            if(path!=null){
+            if (path != null) {
                 path.forEach((Node node) -> {
                     node.data = "P";
                 });
                 drawer = new Thread(new Runnable() {
                     @Override
-                    public void run() { 
-                        while(!Thread.currentThread().isInterrupted()) {
-                            if(path!=null){
+                    public void run() {
+                        while (!Thread.currentThread().isInterrupted()) {
+                            if (path != null) {
                                 ventana.paintPath(path);
-                            }else{
+                            } else {
                                 ventana.reset();
                             }
-                              
-                        }
 
+                        }
 
                     }
                 });
+                try {
+                    drawer.join();
+                } catch (InterruptedException e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
                 drawer.start();
             }
-            
+
         }
 
         if (e.getSource().equals(ventana.reset)) {
 
-            if(!drawer.isInterrupted()){
+            if (!drawer.isInterrupted()) {
                 drawer.interrupt();
+                path = null;
+                ventana.reset();
             }
-            path=null;
-            ventana.reset();
-              
+
+        }
+
+        if (e.getSource().equals(ventana.define)) {
+            try {
+                getNode();
+                
+            } catch (Exception w) {
+                w.getStackTrace();
+            }
         }
     }
 
@@ -163,4 +184,14 @@ public class EventController implements ActionListener, KeyListener {
         this.start = start;
     }
 
+    public void getNode() {
+        InputField input;
+        frame = new JFrame();
+        JPanel panel = new JPanel(new GridLayout(5, 3));
+        panel.add(input = new InputField(this.graph,this));
+        frame.getContentPane().add(panel);
+        frame.pack();
+        frame.setDefaultCloseOperation(frame.HIDE_ON_CLOSE);
+        frame.setVisible(true);        
+    }
 }

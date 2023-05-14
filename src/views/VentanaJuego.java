@@ -17,7 +17,7 @@ public class VentanaJuego extends JFrame
     public Board tablero;
     
 
-    
+    public JButton define;
     public JButton profundidad;
     public JButton anchura;
     public JButton UFC;
@@ -59,10 +59,16 @@ public class VentanaJuego extends JFrame
     public void inicializarBotones(){
 
         JLabel label = new JLabel("Recorridos");
-        label.setBounds(994, 70, 190, 30);
+        label.setBounds(994, 20, 190, 30);
         label.setForeground(Color.white);
         panelJuego.add(label);
+
         
+        define=new JButton("Definir Nodos");
+        define.setBounds(994, 56, 190, 30);
+        define.setFocusable(false);
+        panelJuego.add(define);
+
         profundidad=new JButton("Recorrido en Profundidad");
         profundidad.setBounds(994, 112, 190, 30);
         profundidad.setFocusable(false);
@@ -138,4 +144,17 @@ public class VentanaJuego extends JFrame
     public void reset(){
         this.tablero.resetBoard(); 
     }
+
+    /**
+     *             int[] coorInit;
+            int[] coorEnd;
+            JFrame frame = new JFrame();
+            JPanel panel = new JPanel(new GridLayout(3, 3));
+            panel.add(new InputField());
+
+            frame.getContentPane().add(panel);
+            frame.pack();
+            frame.setDefaultCloseOperation(frame.HIDE_ON_CLOSE);
+            frame.setVisible(true);
+     */
 }
