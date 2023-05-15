@@ -7,7 +7,6 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import controllers.EventController;
-import jade.util.Event;
 import models.Graph;
 import models.Node;
 
@@ -19,7 +18,6 @@ public class InputField extends JPanel implements ActionListener{
     private JTextField textField2;
     private JButton button;
     private int [] data;
-    private ActionListener listener;
     private Graph graph;
     private EventController controller;
 
@@ -80,7 +78,6 @@ public class InputField extends JPanel implements ActionListener{
                 JOptionPane.showMessageDialog(null, "Ingrese Valores Enteros","Error ingreso datos",JOptionPane.ERROR_MESSAGE);
                 er.printStackTrace();
             } catch (Throwable e1) {
-                // TODO Auto-generated catch block
                 e1.printStackTrace();
             }
 

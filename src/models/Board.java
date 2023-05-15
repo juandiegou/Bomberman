@@ -60,7 +60,6 @@ public class Board extends Component {
                 this.repaint();
 
             } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }

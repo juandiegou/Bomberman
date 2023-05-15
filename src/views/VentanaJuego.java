@@ -145,16 +145,4 @@ public class VentanaJuego extends JFrame
         this.tablero.resetBoard(); 
     }
 
-    /**
-     *             int[] coorInit;
-            int[] coorEnd;
-            JFrame frame = new JFrame();
-            JPanel panel = new JPanel(new GridLayout(3, 3));
-            panel.add(new InputField());
-
-            frame.getContentPane().add(panel);
-            frame.pack();
-            frame.setDefaultCloseOperation(frame.HIDE_ON_CLOSE);
-            frame.setVisible(true);
-     */
 }

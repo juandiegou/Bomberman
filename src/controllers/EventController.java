@@ -7,8 +7,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 
 import java.util.LinkedList;
 import models.*;
@@ -129,7 +129,6 @@ public class EventController implements ActionListener, KeyListener {
                 try {
                     drawer.join();
                 } catch (InterruptedException e1) {
-                    // TODO Auto-generated catch block
                     e1.printStackTrace();
                 }
                 drawer.start();
@@ -185,13 +184,12 @@ public class EventController implements ActionListener, KeyListener {
     }
 
     public void getNode() {
-        InputField input;
         frame = new JFrame();
         JPanel panel = new JPanel(new GridLayout(5, 3));
-        panel.add(input = new InputField(this.graph,this));
+        panel.add(new InputField(this.graph,this));
         frame.getContentPane().add(panel);
         frame.pack();
-        frame.setDefaultCloseOperation(frame.HIDE_ON_CLOSE);
+        frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         frame.setVisible(true);        
     }
 }

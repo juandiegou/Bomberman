@@ -2,8 +2,11 @@ package views;
 
 import controllers.EventController;
 import jade.core.Agent;
+import jade.domain.introspection.ACLMessage;
 import models.Graph;
-import views.behaviours.CyclicAGUI;
+import views.behaviours.ComplexAGUI;
+import views.behaviours.SenderAGUI;
+import views.behaviours.ReceiverAGUI;
 
 public class AGUI extends Agent {
 
@@ -19,14 +22,12 @@ public class AGUI extends Agent {
         if (graph != null) {
             this.matrix = graph.matrix;
             window = new VentanaJuego(this.matrix);
-
             controller = new EventController(window, graph);
-            addBehaviour(new CyclicAGUI(this));
-
+            ComplexAGUI behaviour = new ComplexAGUI(this);
+            behaviour.addSubBehaviour(new SenderAGUI(this));
+            behaviour.addSubBehaviour(new ReceiverAGUI(this));
         }
     }
 
-    public void action() {
-
-    }
+    
 }
