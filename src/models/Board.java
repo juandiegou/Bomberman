@@ -52,7 +52,7 @@ public class Board extends Component {
         this.panelJuego = panelJuego;
         for (Node node : path) {
             this.actualizarImagenCelda(node.positionX, node.positionY,
-                    getSquare(node.positionX, node.positionY, node.data).getImagenCelda());
+                getSquare(node.positionX, node.positionY, node.data).getImagenCelda());
 
             try {
                 TimeUnit.MILLISECONDS.sleep(500);

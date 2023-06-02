@@ -145,4 +145,8 @@ public class VentanaJuego extends JFrame
         this.tablero.resetBoard(); 
     }
 
+
+    public Board getBoard(){
+        return this.tablero;
+    }
 }

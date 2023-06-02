@@ -1,4 +1,5 @@
 package models;
+
 import java.util.Queue;
 import java.util.Map.Entry;
 import java.util.Comparator;
@@ -11,10 +12,11 @@ public class Graph {
     public HashMap<int[], Node> structure;
     private Queue<Node> queue;
     private int level;
-    public String [][] matrix;
+    public String[][] matrix;
+
     public Graph(HashMap<int[], Node> structure, String[][] matrix) {
 
-        this.level=0;
+        this.level = 0;
         this.structure = structure;
         this.matrix = matrix;
         this.getChild(matrix);
@@ -41,7 +43,7 @@ public class Graph {
                 queue.clear();
                 return path;
             }
-            
+
             for (Node nodes : temp.getChilds()) {
                 if (!path.contains(nodes)) {
                     queue.add(nodes);
@@ -51,7 +53,7 @@ public class Graph {
             if (!path.contains(temp)) {
                 path.add(temp);
             }
-            
+
         }
 
         return path;
@@ -140,7 +142,6 @@ public class Graph {
             for (int columnas = 0; columnas < matrix[filas].length; columnas++) {
                 aux = this.nodeFromCoords(filas, columnas, structure);
 
-                
                 // x-1 y
                 if (filas - 1 > 0) {
                     temp = this.nodeFromCoords(filas - 1, columnas, this.structure);
@@ -148,7 +149,7 @@ public class Graph {
                         aux.childs.add(temp);
                     }
                 }
-                
+
                 // x-1 y-1
                 if (filas - 1 > 0 && columnas - 1 > 0) {
                     temp = this.nodeFromCoords(filas + 1, columnas - 1, this.structure);
@@ -215,46 +216,43 @@ public class Graph {
             for (int columnas = 0; columnas < matrix[filas].length; columnas++) {
                 aux = this.nodeFromCoords(filas, columnas, structure);
 
+                // x-1 y
+                if (filas - 1 > 0) {
+                    temp = this.nodeFromCoords(filas - 1, columnas, this.structure);
+                    if (temp != null && !temp.data.equalsIgnoreCase("M")) {
+                        aux.childs.add(temp);
+                    }
+                }
+                // x y-1
+                if (columnas - 1 > 0) {
+                    temp = this.nodeFromCoords(filas, columnas - 1, this.structure);
+                    if (temp != null && !temp.data.equalsIgnoreCase("M")) {
+                        aux.childs.add(temp);
+                    }
+                }
                 // x+1 y
                 if (filas + 1 < matrix.length) {
                     temp = this.nodeFromCoords(filas + 1, columnas, this.structure);
-                    if (temp != null) {
+                    if (temp != null && !temp.data.equalsIgnoreCase("M")) {
                         aux.childs.add(temp);
-                        
+
                     }
-                   
+
                 }
 
                 // x y+1
                 if (columnas + 1 < matrix[filas].length) {
                     temp = this.nodeFromCoords(filas, columnas + 1, this.structure);
-                    if (temp != null) {
+                    if (temp != null && !temp.data.equalsIgnoreCase("M")) {
                         aux.childs.add(temp);
                         this.level++;
                     }
                 }
 
-                // x-1 y
-                if (filas - 1 > 0) {
-                    temp = this.nodeFromCoords(filas - 1, columnas, this.structure);
-                    if (temp != null) {
-                        aux.childs.add(temp);
-                    }
-                }
-
-                // x y-1
-                if (columnas - 1 > 0) {
-                    temp = this.nodeFromCoords(filas, columnas - 1, this.structure);
-                    if (temp != null) {
-                        aux.childs.add(temp);
-                    }
-                }
-
-                
             }
 
-            
         }
+        
 
     }
 
@@ -390,16 +388,27 @@ public class Graph {
         }
     }
 
-    public LinkedList<Node> hillClimbing(Node start, Node goal) {
+    public LinkedList<Node> hillClimbing(Node start, Node goal, boolean euclidean) {
         LinkedList<Node> path = new LinkedList<Node>();
         Node current = start;
-        double currentCost = manhattan(current, goal);
+        double currentCost;
+        if (euclidean) {
+            currentCost = euclidean(current, start);
+        } else {
+            currentCost = manhattan(current, goal);
+        }
         path.add(current);
         while (current != goal) {
             double lowestCost = Double.POSITIVE_INFINITY;
             Node lowestNode = null;
             for (Node neighbor : current.getChilds()) {
-                double neighborCost = manhattan(neighbor, goal);
+                double neighborCost;
+                if (euclidean) {
+                    neighborCost = manhattan(neighbor, goal);
+                } else {
+
+                    neighborCost = euclidean(neighbor, start);
+                }
                 if (neighborCost < lowestCost) {
                     lowestCost = neighborCost;
                     lowestNode = neighbor;
@@ -412,6 +421,7 @@ public class Graph {
             currentCost = lowestCost;
             path.add(current);
         }
+    
         return path;
     }
 
@@ -475,7 +485,6 @@ public class Graph {
                 double tentativeDist = heuristic.get(current) + heuristic.get(neighbor);
                 if (tentativeDist < neighbor.getPriority()) {
 
-                    // this path to neighbor node is better than any previous one, so update it
                     neighbor.setPrevious(current);
                     neighbor.setPriority(tentativeDist);
 
@@ -506,7 +515,7 @@ public class Graph {
         return path;
     }
 
-    public int getlevel(){
+    public int getlevel() {
         return this.level;
     }
 }

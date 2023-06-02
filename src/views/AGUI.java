@@ -2,11 +2,12 @@ package views;
 
 import controllers.EventController;
 import jade.core.Agent;
-import jade.domain.introspection.ACLMessage;
 import models.Graph;
-import views.behaviours.ComplexAGUI;
-import views.behaviours.SenderAGUI;
-import views.behaviours.ReceiverAGUI;
+import views.behaviours.MainAGUI;
+import jade.core.Runtime;
+import jade.core.Profile;
+import jade.core.ProfileImpl;
+import jade.wrapper.AgentController;
 
 public class AGUI extends Agent {
 
@@ -14,6 +15,8 @@ public class AGUI extends Agent {
     public Graph graph;
     public VentanaJuego window;
     public EventController controller;
+    private boolean bomberman = false;
+    private boolean ghost = false;
 
     public AGUI() {}
 
@@ -23,9 +26,32 @@ public class AGUI extends Agent {
             this.matrix = graph.matrix;
             window = new VentanaJuego(this.matrix);
             controller = new EventController(window, graph);
-            ComplexAGUI behaviour = new ComplexAGUI(this);
-            behaviour.addSubBehaviour(new SenderAGUI(this));
-            behaviour.addSubBehaviour(new ReceiverAGUI(this));
+            addBehaviour(new MainAGUI(this));
+            if(controller.start != null & controller.goal != null){
+                try {
+                    
+                    Runtime runtime = Runtime.instance();
+                    Profile profile = new ProfileImpl("localhost",1099,"MAIN",true);  
+                    AgentController agentBomberman = runtime.createMainContainer(profile)
+                    .createNewAgent("bomberman", "models.agents.Bomberman",
+                    new Object[]{controller.start, controller.goal, this.graph, this.window.tablero } );
+                    agentBomberman.start();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            /** 
+            if(ghost == false){
+                try {
+                    Runtime runtime = Runtime.instance();
+                    Profile profile = new ProfileImpl("localhost",1099,"MAIN",true);  
+                    AgentController agentGhost = runtime.createMainContainer(profile).createNewAgent("bomberman", "models.agents.Ghost",null );
+                    agentGhost.start();
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+            */
         }
     }
 

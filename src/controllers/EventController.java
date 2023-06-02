@@ -97,7 +97,7 @@ public class EventController implements ActionListener, KeyListener {
             }
 
             if (e.getSource().equals(ventana.hillClimbing)) {
-                path = graph.hillClimbing(start, goal);
+                path = graph.hillClimbing(start, goal,true);
             }
 
             if (e.getSource().equals(ventana.beamSearch)) {
@@ -112,35 +112,34 @@ public class EventController implements ActionListener, KeyListener {
                 path.forEach((Node node) -> {
                     node.data = "P";
                 });
-                drawer = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        while (!Thread.currentThread().isInterrupted()) {
-                            if (path != null) {
-                                ventana.paintPath(path);
-                            } else {
-                                ventana.reset();
-                            }
-
-                        }
-
-                    }
-                });
                 try {
+                    drawer = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            while (!Thread.currentThread().isInterrupted()) {
+                                if (path != null) {
+                                    ventana.paintPath(path);
+                                    path.pop();
+                                } else {
+                                    ventana.reset();
+                                }
+                            }
+    
+                        }
+                    });
                     drawer.join();
                 } catch (InterruptedException e1) {
                     e1.printStackTrace();
                 }
                 drawer.start();
             }
-
         }
 
         if (e.getSource().equals(ventana.reset)) {
 
             if (!drawer.isInterrupted()) {
                 drawer.interrupt();
-                path = null;
+                path.clear();;
                 ventana.reset();
             }
 
