@@ -26,7 +26,7 @@ public class AGUI extends Agent {
             this.matrix = graph.matrix;
             window = new VentanaJuego(this.matrix);
             controller = new EventController(window, graph);
-            addBehaviour(new MainAGUI(this));
+            //addBehaviour(new MainAGUI(this));
             if(controller.start != null & controller.goal != null){
                 try {
                     

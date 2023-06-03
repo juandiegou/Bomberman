@@ -7,6 +7,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
@@ -23,6 +24,7 @@ public class EventController implements ActionListener, KeyListener {
     public Node goal;
     private LinkedList<Node> path;
     private Thread drawer;
+    private boolean isDrawing=true;
     private GestorPartidas gestorPartidas;
 
     /**
@@ -112,21 +114,24 @@ public class EventController implements ActionListener, KeyListener {
                 path.forEach((Node node) -> {
                     node.data = "P";
                 });
-                try {
-                    drawer = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            while (!Thread.currentThread().isInterrupted()) {
-                                if (path != null) {
-                                    ventana.paintPath(path);
-                                    path.pop();
-                                } else {
-                                    ventana.reset();
+                isDrawing=true;
+                drawer = new Thread(new Runnable() {                    
+                    @Override
+                    public void run() {
+                        while (isDrawing && !Thread.currentThread().isInterrupted()) {
+                            if (path != null && !path.isEmpty()) {
+                                ventana.paintPath(path);
+                                if (!path.isEmpty()) {  
+                                    path.removeFirst();
                                 }
+                            } else {
+                                ventana.reset();
                             }
-    
                         }
-                    });
+
+                    }
+                });
+                try {
                     drawer.join();
                 } catch (InterruptedException e1) {
                     e1.printStackTrace();
@@ -138,8 +143,10 @@ public class EventController implements ActionListener, KeyListener {
         if (e.getSource().equals(ventana.reset)) {
 
             if (!drawer.isInterrupted()) {
+                //drawer.interrupt();
+                isDrawing=false;
                 drawer.interrupt();
-                path.clear();;
+                this.path.clear();
                 ventana.reset();
             }
 
@@ -183,12 +190,18 @@ public class EventController implements ActionListener, KeyListener {
     }
 
     public void getNode() {
-        frame = new JFrame();
-        JPanel panel = new JPanel(new GridLayout(5, 3));
-        panel.add(new InputField(this.graph,this));
-        frame.getContentPane().add(panel);
-        frame.pack();
-        frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-        frame.setVisible(true);        
+        if(this.start==null || this.goal==null){
+            frame = new JFrame();
+            JPanel panel = new JPanel(new GridLayout(5, 3));
+            panel.add(new InputField(this.graph,this));
+            frame.getContentPane().add(panel);
+            frame.pack();
+            frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+            frame.setVisible(true);  
+        }else{
+            JOptionPane.showMessageDialog(frame, "Los nodos ya estan definidos","Información",JOptionPane.WARNING_MESSAGE);
+
+        }
+             
     }
 }

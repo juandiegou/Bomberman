@@ -94,25 +94,24 @@ public class Graph {
      * @param goal
      * @return
      */
-    public LinkedList<Node> ufc(Node start, Node goal, LinkedList<Node> path) {
 
+     public LinkedList<Node> ufc(Node start, Node goal, LinkedList<Node> path) {
         Node temp;
         queue = new LinkedList<Node>();
         Node tempNode;
+        start.setPriority(0);
         queue.add(start);
+        //path.addLast(goal);
         while (!queue.isEmpty()) {
             temp = queue.peek();
             for (Node node : temp.getChilds()) {
                 queue.add(node);
             }
-
             path.add(temp);
-
             tempNode = temp;
-
             while (!tempNode.getChilds().isEmpty()) {
-                tempNode = tempNode.getChilds().removeFirst();
-                if (tempNode != null) {
+                if (tempNode.getChilds().size() >=0 ) {  
+                    tempNode = tempNode.getChilds().removeLast();
                     if (!path.contains(tempNode)) {
                         path.add(tempNode);
                         if (path.contains(goal)) {
@@ -120,15 +119,15 @@ public class Graph {
                             break;
                         }
                     }
-
                 }
-
             }
-
+            if (path.size() >this.matrix.length*this.matrix[0].length) {
+                queue.clear();
+            }
         }
         return path;
-
     }
+    
 
     /**
      * @param matrix
@@ -252,7 +251,6 @@ public class Graph {
             }
 
         }
-        
 
     }
 
@@ -292,7 +290,7 @@ public class Graph {
         }
         int beta = this.getBeta();
         queue.add(start);
-        this.initializtion();
+        this.initialization();
         HashMap<Node, Node> parentMap = new HashMap<>();
         LinkedList<Node> visitedNodes = new LinkedList<Node>();
         int currentPriority = 0;
@@ -382,9 +380,9 @@ public class Graph {
         return beta;
     }
 
-    private void initializtion() {
+    private void initialization() {
         for (Node temp : this.structure.values()) {
-            temp.setPrioity(Double.POSITIVE_INFINITY);
+            temp.setPriority(Double.POSITIVE_INFINITY);
         }
     }
 
@@ -393,10 +391,10 @@ public class Graph {
         Node current = start;
         double currentCost;
         if (euclidean) {
-            currentCost = euclidean(current, start);
+            currentCost = euclidean(current, goal);
         } else {
-            currentCost = manhattan(current, goal);
-        }
+         currentCost = manhattan(current, goal);
+         }
         path.add(current);
         while (current != goal) {
             double lowestCost = Double.POSITIVE_INFINITY;
@@ -407,7 +405,7 @@ public class Graph {
                     neighborCost = manhattan(neighbor, goal);
                 } else {
 
-                    neighborCost = euclidean(neighbor, start);
+                    neighborCost = euclidean(neighbor, goal);
                 }
                 if (neighborCost < lowestCost) {
                     lowestCost = neighborCost;
@@ -421,7 +419,7 @@ public class Graph {
             currentCost = lowestCost;
             path.add(current);
         }
-    
+
         return path;
     }
 
@@ -440,7 +438,7 @@ public class Graph {
         } else {
             heuristic = this.manhattan(target);
         }
-        initializtion();
+        initialization();
         // initialize priority queue to store nodes to visit
         LinkedList<Node> path = new LinkedList<Node>();
         PriorityQueue<Node> openList = new PriorityQueue<Node>(new Comparator<Node>() {

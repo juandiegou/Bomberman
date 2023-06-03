@@ -2,6 +2,8 @@
 import java.util.HashMap;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+import controllers.EventController;
 import jade.core.Runtime;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
@@ -10,11 +12,14 @@ import models.Graph;
 import models.Node;
 import tools.Conversor;
 import tools.Reader;
+import views.VentanaJuego;
 
 public class Main {
 
     @SuppressWarnings("empty-statement")
     public static void main(String[] args) {
+        VentanaJuego window;
+        EventController controller;
         String path;
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setFileFilter( new FileNameExtensionFilter(".*bomberman's map", "txt")); 
@@ -33,14 +38,20 @@ public class Main {
             }
         }
         Graph graph = new Graph(structure, matrix);
-        Runtime runtime = Runtime.instance();
-        Profile profile = new ProfileImpl("localhost",1099,"MAIN",true);    
-        try {
-            AgentController agentController = runtime.createMainContainer(profile).createNewAgent("vista", "views.AGUI",new Object[]{graph} );
-            agentController.start();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        window = new VentanaJuego(matrix);
+        controller = new EventController(window, graph);
+        //Runtime runtime = Runtime.instance();
+        //Profile profile = new ProfileImpl("localhost",1099,"MAIN",true);    
+        /*
+         * 
+
+         try {
+             AgentController agentController = runtime.createMainContainer(profile).createNewAgent("vista", "views.AGUI",new Object[]{graph} );
+             agentController.start();
+         } catch (Exception ex) {
+             ex.printStackTrace();
+         }
+         */
 
     }
 

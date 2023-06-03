@@ -10,6 +10,8 @@ public class Node{
     private double priority;
     LinkedList<Node> childs;
     Node previous;
+    public Node parent;
+
 
     public Node(int [] position, String data){
         this.position = position;
@@ -17,6 +19,7 @@ public class Node{
         this.positionY = position[1];
         this.data = data;
         this.previous= null;
+        this.parent = null;
         this.childs = new LinkedList<Node> ();
     }
 
@@ -26,13 +29,7 @@ public class Node{
     }
 
 
-    public void setPriority(double priority ){
-        this.priority = priority;
-    }
-
-
-
-    public void setPrioity(double priority){
+    public void setPriority(double priority){
         this.priority = priority;
     }
 
@@ -56,5 +53,13 @@ public class Node{
         return this.previous;
     }
 
+
+    public Node getParent(){
+        return this.parent;
+    }
+
+    public void setParent(Node parent){
+        this.parent= parent;
+    }
     
 }
