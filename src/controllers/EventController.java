@@ -99,15 +99,15 @@ public class EventController implements ActionListener, KeyListener {
             }
 
             if (e.getSource().equals(ventana.hillClimbing)) {
-                path = graph.hillClimbing(start, goal,true);
+                path = graph.hillClimbing(start, goal,false);
             }
 
             if (e.getSource().equals(ventana.beamSearch)) {
-                path = graph.beamsearch(start, goal, true);
+                path = graph.beamsearch(start, goal, false);
             }
 
             if (e.getSource().equals(ventana.aStar)) {
-                path = graph.AStar(start, goal, true);
+                path = graph.AStar(start, goal, false);
             }
 
             if (path != null) {
@@ -121,14 +121,10 @@ public class EventController implements ActionListener, KeyListener {
                         while (isDrawing && !Thread.currentThread().isInterrupted()) {
                             if (path != null && !path.isEmpty()) {
                                 ventana.paintPath(path);
-                                if (!path.isEmpty()) {  
-                                    path.removeFirst();
-                                }
                             } else {
                                 ventana.reset();
                             }
                         }
-
                     }
                 });
                 try {
@@ -147,6 +143,9 @@ public class EventController implements ActionListener, KeyListener {
                 isDrawing=false;
                 drawer.interrupt();
                 this.path.clear();
+                this.goal=null;
+                this.start= null;
+                this.ventana.repaint();
                 ventana.reset();
             }
 

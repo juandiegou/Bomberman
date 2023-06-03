@@ -55,7 +55,7 @@ public class Board extends Component {
                 getSquare(node.positionX, node.positionY, node.data).getImagenCelda());
 
             try {
-                TimeUnit.MILLISECONDS.sleep(250);
+                TimeUnit.MILLISECONDS.sleep(125);
 
                 this.repaint();
 

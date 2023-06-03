@@ -98,12 +98,12 @@ public class Graph {
      public LinkedList<Node> ufc(Node start, Node goal, LinkedList<Node> path) {
         Node temp;
         queue = new LinkedList<Node>();
-        Node tempNode;
+        Node tempNode; 
         start.setPriority(0);
         queue.add(start);
         //path.addLast(goal);
         while (!queue.isEmpty()) {
-            temp = queue.peek();
+            temp = queue.poll();
             for (Node node : temp.getChilds()) {
                 queue.add(node);
             }
@@ -126,6 +126,8 @@ public class Graph {
             }
         }
         return path;
+
+       
     }
     
 
@@ -390,10 +392,14 @@ public class Graph {
         LinkedList<Node> path = new LinkedList<Node>();
         Node current = start;
         double currentCost;
+        HashMap<Node, Double> heuristic;
         if (euclidean) {
             currentCost = euclidean(current, goal);
+            heuristic= euclidian(goal);
+
         } else {
-         currentCost = manhattan(current, goal);
+            currentCost = manhattan(current, goal);
+            heuristic=manhattan(goal);
          }
         path.add(current);
         while (current != goal) {
