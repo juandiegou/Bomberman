@@ -1,16 +1,17 @@
+package models;
 import java.util.*;
 
 public class Node{
 
-    char data;
+    public String data;
     private int [] position;
-    int positionX;
-    int positionY;
+    public int positionX;
+    public int positionY;
     private double priority;
     LinkedList<Node> childs;
     Node previous;
 
-    public Node(int [] position, char data){
+    public Node(int [] position, String data){
         this.position = position;
         this.positionX= position[0];
         this.positionY = position[1];
