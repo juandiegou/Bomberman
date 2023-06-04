@@ -19,8 +19,8 @@ public class Graph {
         this.level = 0;
         this.structure = structure;
         this.matrix = matrix;
-        this.getChild(matrix);
-        // this.getFullChild(matrix);
+        //this.getChild(matrix);
+        this.getFullChild(matrix);
     }
 
     public Graph() {
@@ -144,38 +144,38 @@ public class Graph {
                 aux = this.nodeFromCoords(filas, columnas, structure);
 
                 // x-1 y
-                if (filas - 1 > 0) {
+                if (filas - 1 >=0) {
                     temp = this.nodeFromCoords(filas - 1, columnas, this.structure);
-                    if (temp != null) {
+                    if (temp != null && !temp.data.equalsIgnoreCase("M")) {
                         aux.childs.add(temp);
                     }
                 }
 
                 // x-1 y-1
-                if (filas - 1 > 0 && columnas - 1 > 0) {
+                if (filas - 1 >= 0 && columnas - 1 >= 0) {
                     temp = this.nodeFromCoords(filas + 1, columnas - 1, this.structure);
-                    if (temp != null) {
+                    if (temp != null && !temp.data.equalsIgnoreCase("M")) {
                         aux.childs.add(temp);
                     }
                 }
                 // x y-1
-                if (columnas - 1 > 0) {
+                if (columnas - 1 >= 0) {
                     temp = this.nodeFromCoords(filas, columnas - 1, this.structure);
-                    if (temp != null) {
+                    if (temp != null && !temp.data.equalsIgnoreCase("M")) {
                         aux.childs.add(temp);
                     }
                 }
                 // x+1 y-1
-                if (filas + 1 < matrix.length && columnas - 1 > 0) {
+                if (filas + 1 < matrix.length && columnas - 1 >= 0) {
                     temp = this.nodeFromCoords(filas + 1, columnas - 1, this.structure);
-                    if (temp != null) {
+                    if (temp != null && !temp.data.equalsIgnoreCase("M")) {
                         aux.childs.add(temp);
                     }
                 }
                 // x+1 y
                 if (filas + 1 < matrix.length) {
                     temp = this.nodeFromCoords(filas + 1, columnas, this.structure);
-                    if (temp != null) {
+                    if (temp != null && !temp.data.equalsIgnoreCase("M")) {
                         aux.childs.add(temp);
                     }
                 }
@@ -183,22 +183,22 @@ public class Graph {
                 // x+1 y+1
                 if (filas + 1 < matrix.length && columnas + 1 < matrix[filas].length) {
                     temp = this.nodeFromCoords(filas + 1, columnas + 1, this.structure);
-                    if (temp != null) {
+                    if (temp != null && !temp.data.equalsIgnoreCase("M")) {
                         aux.childs.add(temp);
                     }
                 }
                 // x y+1
                 if (columnas + 1 < matrix[filas].length) {
                     temp = this.nodeFromCoords(filas, columnas + 1, this.structure);
-                    if (temp != null) {
+                    if (temp != null && !temp.data.equalsIgnoreCase("M")) {
                         aux.childs.add(temp);
                     }
                 }
 
                 // x-1 y+1
-                if (filas - 1 > 0 && columnas + 1 < matrix[filas].length) {
+                if (filas - 1 >= 0 && columnas + 1 < matrix[filas].length) {
                     temp = this.nodeFromCoords(filas - 1, columnas + 1, this.structure);
-                    if (temp != null) {
+                    if (temp != null && !temp.data.equalsIgnoreCase("M")) {
                         aux.childs.add(temp);
                     }
                 }
@@ -218,14 +218,14 @@ public class Graph {
                 aux = this.nodeFromCoords(filas, columnas, structure);
 
                 // x-1 y
-                if (filas - 1 > 0) {
+                if (filas - 1 >= 0) {
                     temp = this.nodeFromCoords(filas - 1, columnas, this.structure);
                     if (temp != null && !temp.data.equalsIgnoreCase("M")) {
                         aux.childs.add(temp);
                     }
                 }
                 // x y-1
-                if (columnas - 1 > 0) {
+                if (columnas - 1 >= 0) {
                     temp = this.nodeFromCoords(filas, columnas - 1, this.structure);
                     if (temp != null && !temp.data.equalsIgnoreCase("M")) {
                         aux.childs.add(temp);
@@ -360,7 +360,8 @@ public class Graph {
      */
     private double euclidean(Node origin, Node target) {
         return Math.sqrt(
-                Math.pow(origin.positionX - target.positionX, 2) + Math.pow(origin.positionY - target.positionY, 2));
+            Math.pow(origin.positionX - target.positionX, 2) + 
+            Math.pow(origin.positionY - target.positionY, 2));
     }
 
     /**
@@ -407,12 +408,7 @@ public class Graph {
             Node lowestNode = null;
             for (Node neighbor : current.getChilds()) {
                 double neighborCost;
-                if (euclidean) {
-                    neighborCost = manhattan(neighbor, goal);
-                } else {
-
-                    neighborCost = euclidean(neighbor, goal);
-                }
+                neighborCost= heuristic.get(neighbor);
                 if (neighborCost < lowestCost) {
                     lowestCost = neighborCost;
                     lowestNode = neighbor;
