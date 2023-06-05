@@ -22,8 +22,8 @@ public class MainAGUI extends SimpleBehaviour{
 
     @Override
     public boolean done() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'done'");
+        System.out.println("terminé");
+        return true;
     }
 
 

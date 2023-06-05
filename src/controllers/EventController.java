@@ -26,6 +26,7 @@ public class EventController implements ActionListener, KeyListener {
     private Thread drawer;
     private boolean isDrawing=true;
     private GestorPartidas gestorPartidas;
+    public String type;
 
     /**
      * Constructor de objetos ControladorEventos
@@ -39,6 +40,7 @@ public class EventController implements ActionListener, KeyListener {
         this.gestorPartidas = new GestorPartidas();
         escucharAcciones(this);
         escucharTeclado(this);
+        this.type="AStar";
 
     }
 
@@ -87,27 +89,33 @@ public class EventController implements ActionListener, KeyListener {
 
         if (start != null & goal != null) {
             if (e.getSource().equals(ventana.profundidad)) {
-                path = graph.profundidad(start, goal, new LinkedList<Node>());
+                // path = graph.profundidad(start, goal, new LinkedList<Node>());
+                this.type ="profundidad";
             }
 
             if (e.getSource().equals(ventana.anchura)) {
-                path = graph.anchura(start, goal);
+                // path = graph.anchura(start, goal);
+                this.type="anchura";
             }
 
             if (e.getSource().equals(ventana.UFC)) {
-                path = graph.ufc(start, goal, new LinkedList<Node>());
+                // path = graph.ufc(start, goal, new LinkedList<Node>());
+                this.type="ufc";
             }
 
             if (e.getSource().equals(ventana.hillClimbing)) {
-                path = graph.hillClimbing(start, goal,true);
+                // path = graph.hillClimbing(start, goal,true);
+                this.type="hillclimbing";
             }
 
             if (e.getSource().equals(ventana.beamSearch)) {
-                path = graph.beamsearch(start, goal, false);
+                // path = graph.beamsearch(start, goal, false);
+                this.type="beamSearch";
             }
 
             if (e.getSource().equals(ventana.aStar)) {
-                path = graph.AStar(start, goal, false);
+                // path = graph.AStar(start, goal, false);
+                this.type="AStar";
             }
 
             if (path != null) {
@@ -134,6 +142,7 @@ public class EventController implements ActionListener, KeyListener {
                 }
                 drawer.start();
             }
+            
         }
 
         if (e.getSource().equals(ventana.reset)) {

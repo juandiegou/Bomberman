@@ -42,6 +42,9 @@ public class VentanaJuego extends JFrame
         
     }
     
+    public VentanaJuego() {
+    }
+
     /** Inicializa los componentes de PanelJuego
       */
     

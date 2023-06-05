@@ -8,6 +8,7 @@ import jade.core.Runtime;
 import jade.core.Profile;
 import jade.core.ProfileImpl;
 import jade.wrapper.AgentController;
+import jade.wrapper.ContainerController;
 
 public class AGUI extends Agent {
 
@@ -21,7 +22,10 @@ public class AGUI extends Agent {
     public AGUI() {}
 
     protected void setup() {
-        this.graph = (Graph) getArguments()[0];
+        this.graph = (Graph) getArguments()[0];              
+        Runtime runtime = Runtime.instance();
+        Profile profile = new ProfileImpl("localhost",1099,"MAIN",true); 
+        ContainerController container = (ContainerController) runtime.createMainContainer(profile);
         if (graph != null) {
             this.matrix = graph.matrix;
             window = new VentanaJuego(this.matrix);
@@ -29,25 +33,18 @@ public class AGUI extends Agent {
             addBehaviour(new MainAGUI(this));
             if(controller.start != null & controller.goal != null){
                 try {
-                    
-                    Runtime runtime = Runtime.instance();
-                    Profile profile = new ProfileImpl("localhost",1099,"MAIN",true);  
-                    AgentController agentBomberman = runtime.createMainContainer(profile)
-                    .createNewAgent("bomberman", "models.agents.Bomberman",
-                    new Object[]{controller.start, controller.goal, this.graph, this.window});
-                    agentBomberman.start();
+                    container.createNewAgent("bomberman", "models.agents.Bomberman",
+                    new Object[]{controller.start, controller.goal, this.graph, this.window,this.controller});
+                    container.getAgent("bomberman").start();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }
             if(ghost == false){
                 try {
-                    Runtime runtime = Runtime.instance();
-                    Profile profile = new ProfileImpl("localhost",1099,"MAIN",true);  
-                    AgentController agentGhost = runtime.createMainContainer(profile)
-                    .createNewAgent("gosht", "models.agents.Ghost", 
-                    new Object[]{this.graph, this.window.tablero } );
-                    agentGhost.start();
+                    ((ContainerController) container).createNewAgent("ghost", "models.agents.Ghost", 
+                    new Object[]{this.graph, this.window } );
+                    container.getAgent("ghost").start();
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }

@@ -3,6 +3,7 @@ package models.agents;
 import jade.core.Agent;
 import java.util.LinkedList;
 
+import controllers.EventController;
 import models.Board;
 import models.Graph;
 import models.Node;
@@ -15,6 +16,7 @@ public class Bomberman extends Agent{
     public Node goal;
     public Graph graph;
     public VentanaJuego window;
+    public EventController controller;
     public LinkedList<Node> path;
 
     /**
@@ -27,6 +29,7 @@ public class Bomberman extends Agent{
         this.goal = (Node) getArguments()[1];
         this.graph = (Graph) getArguments()[2];
         this.window =(VentanaJuego) getArguments()[3];
+        this.controller = (EventController) getArguments()[4];
         addBehaviour(new BombermanCyclic(this));
     }
 }
