@@ -18,25 +18,19 @@ public class BombermanCyclic extends CyclicBehaviour{
     }
 
     @Override
-    public void action() {
-        this.bomberman.board.getSquare(0, 0,"C").getImagenCelda();    
-        
-        /**
-         * 
-
+    public void action() {       
          this.bomberman.path = calculateRoute();
          ACLMessage message = new ACLMessage(ACLMessage.INFORM);
          AID receptor = new AID("gosht",AID.ISLOCALNAME);
-         receptor.addAddresses("http://192.168.100.51:7778/acc");
          message.addReceiver(receptor);
-         message.setContent("x");
+         message.setContent(this.bomberman.path.toString());
          this.bomberman.send(message);
-         */
     }
 
     public LinkedList<Node> calculateRoute(){
-        
-        return new LinkedList<Node>();
+        LinkedList <Node>path = new LinkedList<Node>();
+        path.add(this.bomberman.graph.AStar(this.bomberman.origin, this.bomberman.goal, false).get(1));
+        return path;
     }
     
 }

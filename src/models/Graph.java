@@ -295,7 +295,7 @@ public class Graph {
         this.initialization();
         HashMap<Node, Node> parentMap = new HashMap<>();
         LinkedList<Node> visitedNodes = new LinkedList<Node>();
-        int currentPriority = 0;
+        int currentPriority =0;
 
         while (!queue.isEmpty()) {
             Node current = queue.poll();

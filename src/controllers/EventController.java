@@ -99,7 +99,7 @@ public class EventController implements ActionListener, KeyListener {
             }
 
             if (e.getSource().equals(ventana.hillClimbing)) {
-                path = graph.hillClimbing(start, goal,false);
+                path = graph.hillClimbing(start, goal,true);
             }
 
             if (e.getSource().equals(ventana.beamSearch)) {
