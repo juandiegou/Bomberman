@@ -1,12 +1,17 @@
 package models.behaviours;
 
+import java.io.IOException;
 import java.util.LinkedList;
 
 import jade.core.AID;
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.UnreadableException;
+
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import models.agents.Bomberman;
 import models.Node;
 
@@ -25,70 +30,61 @@ public class BombermanCyclic extends CyclicBehaviour {
 
     @Override
     public void action() {
-        System.out.println("Bomberman");
-        this.bomberman.path = calculateRoute();
-        //this.bomberman.window.paintPath(this.bomberman.path);
-        
+        if(!this.bomberman.controller.type.equals("")){
+
+            this.bomberman.path = calculateRoute();
+        }        
         if (this.bomberman.path != null) {
             this.bomberman.path.forEach((Node node) -> {
                 node.data = "P";
             });
-            isDrawing=true;
-            drawer = new Thread(new Runnable() {                    
-                @Override
-                public void run() {
-                    while (isDrawing && !Thread.currentThread().isInterrupted()) {
-                        if (bomberman.path != null && !bomberman.path.isEmpty()) {
-                            bomberman.window.paintPath(bomberman.path);
-                        }  {
-                            bomberman.window.reset();
-                        }
-                    }
-                }
-            });
-            try {
-                drawer.join();
-            } catch (InterruptedException e1) {
-                e1.printStackTrace();
-            }
-            drawer.start();
+            bomberman.window.paintPath(bomberman.path);
         }
         
         ACLMessage message = new ACLMessage(ACLMessage.INFORM);
         AID receptor = new AID("ghost", AID.ISLOCALNAME);
         message.addReceiver(receptor);
-        message.setContent(gson.toJson(this.bomberman.path, this.bomberman.path.getClass()));
+        try {
+            if(!this.bomberman.path.equals(null) && this.bomberman.path.size()>1){
+                Node temp = this.bomberman.path.get(1);
+                message.setContentObject(temp);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         this.bomberman.send(message);
+
+        ACLMessage reply = this.bomberman.blockingReceive();
+        try {
+            Node temp = (Node) reply.getContentObject();
+            temp.setObtacule(true);
+            reply.setSender(reply.getSender());
+        } catch (UnreadableException e) {
+            e.printStackTrace();
+        }
     }
 
     public LinkedList<Node> calculateRoute() {
-        System.out.println("claculando...");
         LinkedList<Node> path = new LinkedList<Node>();
         switch (this.bomberman.controller.type) {
             case "profundidad":
-                path.add(this.bomberman.graph
-                        .profundidad(this.bomberman.origin, this.bomberman.goal, new LinkedList<Node>())
-                        .get(1));
+                path.addAll(this.bomberman.graph
+                        .profundidad(this.bomberman.origin, this.bomberman.goal, new LinkedList<Node>()));
             case "anchura":
-                path.add(this.bomberman.graph
-                        .anchura(this.bomberman.origin, this.bomberman.goal).get(1));
+                path.addAll(this.bomberman.graph
+                        .anchura(this.bomberman.origin, this.bomberman.goal));
             case "ufc":
-                path.add(this.bomberman.graph
-                        .ufc(this.bomberman.origin, this.bomberman.goal, new LinkedList<Node>())
-                        .get(1));
+                path.addAll(this.bomberman.graph
+                        .ufc(this.bomberman.origin, this.bomberman.goal, new LinkedList<Node>()));
             case "beamSearch":
-                path.add(this.bomberman.graph
-                        .beamsearch(this.bomberman.origin, this.bomberman.goal, false)
-                        .get(1));
+                path.addAll(this.bomberman.graph
+                        .beamsearch(this.bomberman.origin, this.bomberman.goal, false));
             case "hillClimbing":
-                path.add(this.bomberman.graph
-                        .hillClimbing(this.bomberman.origin, this.bomberman.goal, false)
-                        .get(1));
+                path.addAll(this.bomberman.graph
+                        .hillClimbing(this.bomberman.origin, this.bomberman.goal, false));
             case "AStar":
-                path.add(this.bomberman.graph
-                        .AStar(this.bomberman.origin, this.bomberman.goal, false)
-                        .get(1));
-                System.out.println("*");
+                path.addAll(this.bomberman.graph
+                        .AStar(this.bomberman.origin, this.bomberman.goal, false));
         }
         return path;
     }

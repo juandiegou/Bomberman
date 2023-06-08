@@ -146,7 +146,7 @@ public class Graph {
                 // x-1 y
                 if (filas - 1 >=0) {
                     temp = this.nodeFromCoords(filas - 1, columnas, this.structure);
-                    if (temp != null && !temp.data.equalsIgnoreCase("M")) {
+                    if (temp != null && !temp.data.equalsIgnoreCase("M") && !temp.obstacule) {
                         aux.childs.add(temp);
                     }
                 }
@@ -154,28 +154,28 @@ public class Graph {
                 // x-1 y-1
                 if (filas - 1 >= 0 && columnas - 1 >= 0) {
                     temp = this.nodeFromCoords(filas + 1, columnas - 1, this.structure);
-                    if (temp != null && !temp.data.equalsIgnoreCase("M")) {
+                    if (temp != null && !temp.data.equalsIgnoreCase("M") && !temp.obstacule) {
                         aux.childs.add(temp);
                     }
                 }
                 // x y-1
                 if (columnas - 1 >= 0) {
                     temp = this.nodeFromCoords(filas, columnas - 1, this.structure);
-                    if (temp != null && !temp.data.equalsIgnoreCase("M")) {
+                    if (temp != null && !temp.data.equalsIgnoreCase("M") && !temp.obstacule) {
                         aux.childs.add(temp);
                     }
                 }
                 // x+1 y-1
                 if (filas + 1 < matrix.length && columnas - 1 >= 0) {
                     temp = this.nodeFromCoords(filas + 1, columnas - 1, this.structure);
-                    if (temp != null && !temp.data.equalsIgnoreCase("M")) {
+                    if (temp != null && !temp.data.equalsIgnoreCase("M") && !temp.obstacule) {
                         aux.childs.add(temp);
                     }
                 }
                 // x+1 y
                 if (filas + 1 < matrix.length) {
                     temp = this.nodeFromCoords(filas + 1, columnas, this.structure);
-                    if (temp != null && !temp.data.equalsIgnoreCase("M")) {
+                    if (temp != null && !temp.data.equalsIgnoreCase("M") && !temp.obstacule) {
                         aux.childs.add(temp);
                     }
                 }
@@ -183,14 +183,14 @@ public class Graph {
                 // x+1 y+1
                 if (filas + 1 < matrix.length && columnas + 1 < matrix[filas].length) {
                     temp = this.nodeFromCoords(filas + 1, columnas + 1, this.structure);
-                    if (temp != null && !temp.data.equalsIgnoreCase("M")) {
+                    if (temp != null && !temp.data.equalsIgnoreCase("M") && !temp.obstacule) {
                         aux.childs.add(temp);
                     }
                 }
                 // x y+1
                 if (columnas + 1 < matrix[filas].length) {
                     temp = this.nodeFromCoords(filas, columnas + 1, this.structure);
-                    if (temp != null && !temp.data.equalsIgnoreCase("M")) {
+                    if (temp != null && !temp.data.equalsIgnoreCase("M") && !temp.obstacule) {
                         aux.childs.add(temp);
                     }
                 }
@@ -198,7 +198,7 @@ public class Graph {
                 // x-1 y+1
                 if (filas - 1 >= 0 && columnas + 1 < matrix[filas].length) {
                     temp = this.nodeFromCoords(filas - 1, columnas + 1, this.structure);
-                    if (temp != null && !temp.data.equalsIgnoreCase("M")) {
+                    if (temp != null && !temp.data.equalsIgnoreCase("M") && !temp.obstacule) {
                         aux.childs.add(temp);
                     }
                 }
@@ -220,21 +220,21 @@ public class Graph {
                 // x-1 y
                 if (filas - 1 >= 0) {
                     temp = this.nodeFromCoords(filas - 1, columnas, this.structure);
-                    if (temp != null && !temp.data.equalsIgnoreCase("M")) {
+                    if (temp != null && !temp.data.equalsIgnoreCase("M") && !temp.obstacule ) {
                         aux.childs.add(temp);
                     }
                 }
                 // x y-1
                 if (columnas - 1 >= 0) {
                     temp = this.nodeFromCoords(filas, columnas - 1, this.structure);
-                    if (temp != null && !temp.data.equalsIgnoreCase("M")) {
+                    if (temp != null && !temp.data.equalsIgnoreCase("M") && !temp.obstacule) {
                         aux.childs.add(temp);
                     }
                 }
                 // x+1 y
                 if (filas + 1 < matrix.length) {
                     temp = this.nodeFromCoords(filas + 1, columnas, this.structure);
-                    if (temp != null && !temp.data.equalsIgnoreCase("M")) {
+                    if (temp != null && !temp.data.equalsIgnoreCase("M") && !temp.obstacule) {
                         aux.childs.add(temp);
 
                     }
@@ -244,7 +244,7 @@ public class Graph {
                 // x y+1
                 if (columnas + 1 < matrix[filas].length) {
                     temp = this.nodeFromCoords(filas, columnas + 1, this.structure);
-                    if (temp != null && !temp.data.equalsIgnoreCase("M")) {
+                    if (temp != null && !temp.data.equalsIgnoreCase("M") && !temp.obstacule) {
                         aux.childs.add(temp);
                         this.level++;
                     }
@@ -281,10 +281,10 @@ public class Graph {
         PriorityQueue<Node> queue = new PriorityQueue<>(new Comparator<Node>() {
             @Override
             public int compare(Node node1, Node node2) {
-                return Double.compare(node1.getPriority(), node2.getPriority());
+                return Float.compare(node1.getPriority(), node2.getPriority());
             }
         });
-        HashMap<Node, Double> heuristic;
+        HashMap<Node, Float> heuristic;
         if (type) {
             heuristic = this.euclidian(goal);
         } else {
@@ -313,7 +313,7 @@ public class Graph {
                 return path;
             }
             for (Node child : current.getChilds()) {
-                double cost = currentPriority + heuristic.get(child);
+                Float cost = currentPriority + heuristic.get(child);
                 if (child.getPriority() > cost) {
                     queue.remove(child);
                     if (!visitedNodes.contains(current)) {
@@ -336,19 +336,19 @@ public class Graph {
      * @param goal
      * @return
      */
-    public HashMap<Node, Double> euclidian(Node goal) {
-        HashMap<Node, Double> euclidean = new HashMap<Node, Double>();
+    public HashMap<Node, Float> euclidian(Node goal) {
+        HashMap<Node, Float> euclidean = new HashMap<Node, Float>();
         for (Node origin : structure.values()) {
-            euclidean.put(origin, (double) euclidean(origin, goal));
+            euclidean.put(origin, (Float) euclidean(origin, goal));
         }
         return euclidean;
 
     }
 
-    public HashMap<Node, Double> manhattan(Node goal) {
-        HashMap<Node, Double> manhhatan = new HashMap<Node, Double>();
+    public HashMap<Node, Float> manhattan(Node goal) {
+        HashMap<Node, Float> manhhatan = new HashMap<Node, Float>();
         for (Node origin : structure.values()) {
-            manhhatan.put(origin, (double) manhattan(origin, goal));
+            manhhatan.put(origin, (Float) manhattan(origin, goal));
         }
         return manhhatan;
     }
@@ -358,10 +358,8 @@ public class Graph {
      * @param target
      * @return metrics between two Nodes
      */
-    private double euclidean(Node origin, Node target) {
-        return Math.sqrt(
-            Math.pow(origin.positionX - target.positionX, 2) + 
-            Math.pow(origin.positionY - target.positionY, 2));
+    private Float euclidean(Node origin, Node target) {
+        return (float) Math.sqrt(Math.pow(origin.positionX - target.positionX, 2) + Math.pow(origin.positionY - target.positionY, 2));
     }
 
     /**
@@ -369,8 +367,8 @@ public class Graph {
      * @param target
      * @return metrics manhattan between two Nodes
      */
-    private double manhattan(Node origin, Node target) {
-        return Math.abs(origin.positionX - target.positionX) + Math.abs(origin.positionY - target.positionY);
+    private Float manhattan(Node origin, Node target) {
+        return (float) (Math.abs(origin.positionX - target.positionX) + Math.abs(origin.positionY - target.positionY));
     }
 
     private int getBeta() {
@@ -385,15 +383,15 @@ public class Graph {
 
     private void initialization() {
         for (Node temp : this.structure.values()) {
-            temp.setPriority(Double.POSITIVE_INFINITY);
+            temp.setPriority(Float.POSITIVE_INFINITY);
         }
     }
 
     public LinkedList<Node> hillClimbing(Node start, Node goal, boolean euclidean) {
         LinkedList<Node> path = new LinkedList<Node>();
         Node current = start;
-        double currentCost;
-        HashMap<Node, Double> heuristic;
+        Float currentCost;
+        HashMap<Node, Float> heuristic;
         if (euclidean) {
             currentCost = euclidean(current, goal);
             heuristic= euclidian(goal);
@@ -404,10 +402,10 @@ public class Graph {
          }
         path.add(current);
         while (current != goal) {
-            double lowestCost = Double.POSITIVE_INFINITY;
+            Float lowestCost = Float.POSITIVE_INFINITY; //Double.POSITIVE_INFINITY;
             Node lowestNode = null;
             for (Node neighbor : current.getChilds()) {
-                double neighborCost;
+                Float neighborCost;
                 neighborCost= heuristic.get(neighbor);
                 if (neighborCost < lowestCost) {
                     lowestCost = neighborCost;
@@ -434,7 +432,7 @@ public class Graph {
      */
     public LinkedList<Node> AStar(Node origin, Node target, boolean type) {
 
-        HashMap<Node, Double> heuristic;
+        HashMap<Node, Float> heuristic;
         if (type) {
             heuristic = this.euclidian(target);
         } else {
@@ -446,7 +444,7 @@ public class Graph {
         PriorityQueue<Node> openList = new PriorityQueue<Node>(new Comparator<Node>() {
             @Override
             public int compare(Node node1, Node node2) {
-                return Double.compare(node1.getPriority(), node2.getPriority());
+                return Float.compare(node1.getPriority(), node2.getPriority());
             }
         });
 
@@ -465,7 +463,6 @@ public class Graph {
             // check if we've reached the target node
             if (current == target) {
                 // backtrack to create path from origin to target and return it
-                System.out.println("encontrado!!!");
                 return reconstructPath(origin, target);
             }
 
@@ -482,7 +479,7 @@ public class Graph {
 
                 // calculate the distance from the origin node to the neighbor node
                 // double tentativeDist = current.getPriority() + neighbor.getPriority();
-                double tentativeDist = heuristic.get(current) + heuristic.get(neighbor);
+                Float tentativeDist = heuristic.get(current) + heuristic.get(neighbor);
                 if (tentativeDist < neighbor.getPriority()) {
 
                     neighbor.setPrevious(current);

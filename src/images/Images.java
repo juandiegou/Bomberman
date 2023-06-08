@@ -16,5 +16,5 @@ public interface Images
     public static final ImageIcon imagenPiso=new ImageIcon("src/images/bomberman_camino.png");
     public static final ImageIcon imagenPared=new ImageIcon("src/images/bomberman_pared2.png");
     public static final ImageIcon imagenPiedraRubi=new ImageIcon("src/images/bomberman_con_fondo.png");
-    public static final ImageIcon imagenGhost = new ImageIcon("src/images/bomberman-fantasma_con_fondo");
+    public static final ImageIcon imagenGhost = new ImageIcon("src/images/bomberman-fantasma_sin_fondo.png");
 }

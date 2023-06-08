@@ -102,6 +102,9 @@ public class Board extends Component {
         if (data.toUpperCase().equals("P")) {
             return new Square(posX, posY, Images.imagenPiedraRubi, this.panelJuego);
         }
+        if (data.toUpperCase().equals("G")) {
+            return new Square(posX, posY, Images.imagenGhost , this.panelJuego);
+        }
         return null;
 
     }

@@ -17,14 +17,12 @@ import views.InputField;
 import views.VentanaJuego;
 
 public class EventController implements ActionListener, KeyListener {
-    private VentanaJuego ventana;
+    public VentanaJuego ventana;
     public JFrame frame;
     private Graph graph;
     public Node start;
     public Node goal;
     private LinkedList<Node> path;
-    private Thread drawer;
-    private boolean isDrawing=true;
     private GestorPartidas gestorPartidas;
     public String type;
 
@@ -40,7 +38,7 @@ public class EventController implements ActionListener, KeyListener {
         this.gestorPartidas = new GestorPartidas();
         escucharAcciones(this);
         escucharTeclado(this);
-        this.type="AStar";
+        this.type = "AStar";
 
     }
 
@@ -90,80 +88,47 @@ public class EventController implements ActionListener, KeyListener {
         if (start != null & goal != null) {
             if (e.getSource().equals(ventana.profundidad)) {
                 // path = graph.profundidad(start, goal, new LinkedList<Node>());
-                this.type ="profundidad";
+                this.type = "profundidad";
             }
 
             if (e.getSource().equals(ventana.anchura)) {
                 // path = graph.anchura(start, goal);
-                this.type="anchura";
+                this.type = "anchura";
             }
 
             if (e.getSource().equals(ventana.UFC)) {
                 // path = graph.ufc(start, goal, new LinkedList<Node>());
-                this.type="ufc";
+                this.type = "ufc";
             }
 
             if (e.getSource().equals(ventana.hillClimbing)) {
                 // path = graph.hillClimbing(start, goal,true);
-                this.type="hillclimbing";
+                this.type = "hillclimbing";
             }
 
             if (e.getSource().equals(ventana.beamSearch)) {
                 // path = graph.beamsearch(start, goal, false);
-                this.type="beamSearch";
+                this.type = "beamSearch";
             }
 
             if (e.getSource().equals(ventana.aStar)) {
                 // path = graph.AStar(start, goal, false);
-                this.type="AStar";
+                this.type = "AStar";
             }
-
-            if (path != null) {
-                path.forEach((Node node) -> {
-                    node.data = "P";
-                });
-                isDrawing=true;
-                drawer = new Thread(new Runnable() {                    
-                    @Override
-                    public void run() {
-                        while (isDrawing && !Thread.currentThread().isInterrupted()) {
-                            if (path != null && !path.isEmpty()) {
-                                ventana.paintPath(path);
-                            } else {
-                                ventana.reset();
-                            }
-                        }
-                    }
-                });
-                try {
-                    drawer.join();
-                } catch (InterruptedException e1) {
-                    e1.printStackTrace();
-                }
-                drawer.start();
-            }
-            
         }
 
         if (e.getSource().equals(ventana.reset)) {
-
-            if (!drawer.isInterrupted()) {
-                //drawer.interrupt();
-                isDrawing=false;
-                drawer.interrupt();
-                this.path.clear();
-                this.goal=null;
-                this.start= null;
-                this.ventana.repaint();
-                ventana.reset();
-            }
+            this.path.clear();
+            this.goal = null;
+            this.start = null;
+            this.ventana.repaint();
+            ventana.reset();
 
         }
 
         if (e.getSource().equals(ventana.define)) {
             try {
                 getNode();
-                
             } catch (Exception w) {
                 w.getStackTrace();
             }
@@ -198,18 +163,19 @@ public class EventController implements ActionListener, KeyListener {
     }
 
     public void getNode() {
-        if(this.start==null || this.goal==null){
+        if (this.start == null || this.goal == null) {
             frame = new JFrame();
             JPanel panel = new JPanel(new GridLayout(5, 3));
-            panel.add(new InputField(this.graph,this));
+            panel.add(new InputField(this.graph, this));
             frame.getContentPane().add(panel);
             frame.pack();
             frame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
-            frame.setVisible(true);  
-        }else{
-            JOptionPane.showMessageDialog(frame, "Los nodos ya estan definidos","Información",JOptionPane.WARNING_MESSAGE);
+            frame.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(frame, "Los nodos ya estan definidos", "Información",
+                    JOptionPane.WARNING_MESSAGE);
 
         }
-             
+
     }
 }

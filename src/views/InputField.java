@@ -1,5 +1,13 @@
 package views;
 
+import jade.core.Runtime;
+import jade.core.Agent;
+import jade.core.Profile;
+import jade.core.ProfileImpl;
+import jade.wrapper.AgentContainer;
+import jade.wrapper.AgentController;
+import jade.wrapper.ContainerController;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -20,6 +28,10 @@ public class InputField extends JPanel implements ActionListener{
     private int [] data;
     private Graph graph;
     private EventController controller;
+    public Runtime runtime = Runtime.instance();
+    public Profile profile = new ProfileImpl("localhost",1099,"MAIN",true); 
+    public AgentContainer container =  runtime.createMainContainer(profile);
+    public boolean initialization = true;
 
     /**
      * 
@@ -71,6 +83,25 @@ public class InputField extends JPanel implements ActionListener{
                         this.controller.setGoal(node);
                         this.controller.frame.dispose();
                         JOptionPane.showMessageDialog(null, "Nodo Final ingresado","Información",JOptionPane.INFORMATION_MESSAGE);
+                        while(initialization){
+                            if (this.graph != null) {
+                                if(this.controller.start != null & this.controller.start != null){
+                                    try {
+                                        ((ContainerController) container).createNewAgent("bomberman", "models.agents.Bomberman",
+                                        new Object[]{this.controller.start, this.controller.goal, this.graph, this.controller.ventana,this.controller});
+                                        container.getAgent("bomberman").start();       
+                                        ((ContainerController) container).createNewAgent("ghost", "models.agents.Ghost", 
+                                        new Object[]{this.graph, this.controller.ventana } );
+                                        container.getAgent("ghost").start();
+                                        initialization=false;           
+                                    } catch (Exception ex) {
+                                        ex.printStackTrace();
+                                    }
+                                }
+                                    
+                            }
+                
+                        }
 
                     }
                 }

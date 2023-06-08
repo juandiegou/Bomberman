@@ -26,6 +26,7 @@ public class Ghost extends Agent{
 
     protected void setup(){
         this.graph = (Graph) getArguments()[0];
+        this.structure= this.graph.structure;
         this.game = (VentanaJuego) getArguments()[1];
         addBehaviour(new GhostCyclic(this));
         
