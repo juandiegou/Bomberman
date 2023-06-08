@@ -51,17 +51,29 @@ public class Board extends Component {
 
         this.panelJuego = panelJuego;
         for (Node node : path) {
-            this.actualizarImagenCelda(node.positionX, node.positionY,
-                getSquare(node.positionX, node.positionY, node.data).getImagenCelda());
-
-            try {
-                TimeUnit.MILLISECONDS.sleep(125);
-
-                this.repaint();
-
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            if(node.data=="G"  | node.data=="P"){
+                this.actualizarImagenCelda(node.positionX, node.positionY,
+                    getSquare(node.positionX, node.positionY, node.data).getImagenCelda());
+                    try {
+                        //TimeUnit.MILLISECONDS.sleep(62);
+        
+                        this.repaint();
+                        TimeUnit.MILLISECONDS.sleep(900);
+                        this.actualizarImagenCelda(node.positionX, node.positionY,
+                        getSquare(node.positionX, node.positionY, "C").getImagenCelda());
+                        this.repaint();
+        
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+            }else{
+                try {
+                    TimeUnit.MILLISECONDS.sleep(62);
+                }catch(InterruptedException e){
+                    e.getStackTrace();
+                }
             }
+
         }
         this.repaint();
     }

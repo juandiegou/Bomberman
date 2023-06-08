@@ -21,6 +21,7 @@ public class GhostCyclic extends CyclicBehaviour {
     public Node goal;
     private Node start;
     LinkedList<Node> path;
+    Node temp;
     
     public GhostCyclic(Agent agent){
         super(agent);
@@ -47,26 +48,29 @@ public class GhostCyclic extends CyclicBehaviour {
         message = this.ghost.blockingReceive();
         try {
             goal = (Node) message.getContentObject();
+            System.out.println("goal"+goal.positionX+" "+goal.positionY);
         } catch (UnreadableException e) {
             e.printStackTrace();
         }
-        ACLMessage reply = this.ghost.blockingReceive();
+        this.path=this.getMove();
+        ACLMessage reply = new ACLMessage(ACLMessage.INFORM);
         reply.addReceiver(message.getSender());
-        this.start=this.getMove().get(1);
-        this.path.add(this.start);
         if(path!=null){
-            this.path.forEach((Node node) -> {
-                node.data = "G";
-            });
+            temp=this.path.get(1);
+            temp.data="G";
             this.ghost.game.getBoard().actualizarTablero(this.ghost.game.panelJuego,path);
+            this.path.pop();
         }
         try {
             reply.setContentObject(this.start);
+            this.start = temp;
 
         } catch (IOException e) {
             e.printStackTrace();
         }
         this.ghost.send(reply);
+        this.ghost.game.getBoard().actualizarTablero(this.ghost.game.panelJuego,path);
+
 
     }
 

@@ -21,6 +21,8 @@ public class BombermanCyclic extends CyclicBehaviour {
     private Thread drawer;
     private boolean isDrawing=true;
     private Gson gson;
+    private boolean firstMove = true;
+    Node nodeTemp;
 
     public BombermanCyclic(Agent agent) {
         super(agent);
@@ -30,37 +32,58 @@ public class BombermanCyclic extends CyclicBehaviour {
 
     @Override
     public void action() {
-        if(!this.bomberman.controller.type.equals("")){
+        if(firstMove){
 
-            this.bomberman.path = calculateRoute();
-        }        
-        if (this.bomberman.path != null) {
-            this.bomberman.path.forEach((Node node) -> {
-                node.data = "P";
-            });
-            bomberman.window.paintPath(bomberman.path);
-        }
-        
-        ACLMessage message = new ACLMessage(ACLMessage.INFORM);
-        AID receptor = new AID("ghost", AID.ISLOCALNAME);
-        message.addReceiver(receptor);
-        try {
-            if(!this.bomberman.path.equals(null) && this.bomberman.path.size()>1){
-                Node temp = this.bomberman.path.get(1);
-                message.setContentObject(temp);
+            if(!this.bomberman.controller.type.equals("")){
+    
+                this.bomberman.path = calculateRoute();
+            }        
+            if (this.bomberman.path != null) {
+                // this.bomberman.path.forEach((Node node) -> {
+                //     node.data = "P";
+                // });
+                this.bomberman.path.get(0).data="P";
+                bomberman.window.paintPath(bomberman.path);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        this.bomberman.send(message);
+            
+            ACLMessage message = new ACLMessage(ACLMessage.INFORM);
+            AID receptor = new AID("ghost", AID.ISLOCALNAME);
+            message.addReceiver(receptor);
+            try {
+                if(!this.bomberman.path.equals(null) && this.bomberman.path.size()>1){
+                    nodeTemp= this.bomberman.path.get(1);
+                    message.setContentObject(nodeTemp);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            this.bomberman.send(message);
+            this.firstMove=false;
+        }else{
 
-        ACLMessage reply = this.bomberman.blockingReceive();
-        try {
-            Node temp = (Node) reply.getContentObject();
-            temp.setObtacule(true);
-            reply.setSender(reply.getSender());
-        } catch (UnreadableException e) {
-            e.printStackTrace();
+            ACLMessage reply = this.bomberman.blockingReceive();
+            try {
+                Node temp = (Node) reply.getContentObject();
+                temp.setObtacule(true);
+                this.bomberman.origin = nodeTemp;
+                this.bomberman.path = calculateRoute();
+                if(this.bomberman.path.size()>1){
+                    nodeTemp =this.bomberman.path.get(1);
+                }else{
+                    nodeTemp =this.bomberman.path.get(0);
+                }
+                nodeTemp.data="P";
+                bomberman.window.paintPath(bomberman.path);
+                this.bomberman.path.pop();
+                reply.setContentObject(this.bomberman.path.getFirst());
+                reply.addReceiver(reply.getSender());
+                this.bomberman.send(reply);
+
+            } catch (UnreadableException e) {
+                e.printStackTrace();
+            } catch(IOException io){
+                io.getStackTrace();
+            }
         }
     }
 
